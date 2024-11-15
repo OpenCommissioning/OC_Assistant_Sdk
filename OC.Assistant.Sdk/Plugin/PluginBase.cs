@@ -159,16 +159,28 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     protected abstract void OnStop();
     
-    /// <inheritdoc/>
+    /// <summary>
+    /// Is used when the attribute <see cref="PluginIoType"/> is set to <see cref="IoType.Struct"/>.<br/>
+    /// Variables should be added in the <see cref="PluginBase.OnSave"/> method.
+    /// </summary>
     public IIoStructure InputStructure { get; } = new IoStructure(nameof(IPluginController.InputStructure));
     
-    /// <inheritdoc/>
+    /// <summary>
+    /// Is used when the attribute <see cref="PluginIoType"/> is set to <see cref="IoType.Struct"/>.<br/>
+    /// Variables should be added in the <see cref="PluginBase.OnSave"/> method.
+    /// </summary>
     public IIoStructure OutputStructure { get; } = new IoStructure(nameof(IPluginController.OutputStructure));
     
-    /// <inheritdoc/>
+    /// <summary>
+    /// Is used when the attribute <see cref="PluginIoType"/> is set to <see cref="IoType.Address"/>.<br/>
+    /// Defines the plugin input addresses.
+    /// </summary>
     public int[] InputAddress { get; private set; } = [];
     
-    /// <inheritdoc/>
+    /// <summary>
+    /// Is used when the attribute <see cref="PluginIoType"/> is set to <see cref="IoType.Address"/>.<br/>
+    /// Defines the plugin output addresses.
+    /// </summary>
     public int[] OutputAddress { get; private set; } = [];
     
     private bool _readyToStart = true;
