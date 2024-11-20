@@ -24,7 +24,7 @@ jobs:
       
     - name: Versioning
       id: versionize
-      run: versionize
+      run: versionize --exit-insignificant-commits
       continue-on-error: true
 
     - name: Get current version
@@ -34,6 +34,14 @@ jobs:
     - name: Get current changelog
       if: steps.versionize.outcome == 'success'
       run: echo "$(versionize changelog)" > latest_changelog.md
+
+    - name: Push changes to GitHub
+      if: steps.versionize.outcome == 'success'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        tags: true
         
     - name: Dotnet build
       if: steps.versionize.outcome == 'success'
@@ -42,14 +50,6 @@ jobs:
     - name: Push to NuGet
       if: steps.versionize.outcome == 'success'
       run: dotnet nuget push "./Publish/*.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
-    
-    - name: Push changes to GitHub
-      if: steps.versionize.outcome == 'success'
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
-        tags: true
 
     - name: Publish new release
       if: steps.versionize.outcome == 'success'
