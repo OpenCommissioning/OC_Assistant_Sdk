@@ -3,6 +3,8 @@
 The official SDK for creating
 [Open Commissioning Assistant](https://github.com/OpenCommissioning/OC_Assistant) plugins.
 
+[![NuGet Status](https://img.shields.io/nuget/v/OC.Assistant.Sdk.svg)](https://www.nuget.org/packages/OC.Assistant.Sdk/)
+
 ### Quick Getting Started:
 1. Create a ```Class Library``` project with target framework ```.NET8``` or ```.NET Framework 4.8.1```
 2. Add the ```OC.Assistant.Sdk``` package via nuget
