@@ -62,7 +62,7 @@ internal static class TcAdsClientExtension
     
     private static bool ConnectSystemService(this AdsClient client)
     {
-        client.Connect((int)AmsPort.SystemService);
+        client.Connect(ApiLocal.Interface.NetId, (int)AmsPort.SystemService);
         return client.ReadAdsState() != AdsState.Error;
     }
 
