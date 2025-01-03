@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.5.0"></a>
+## [1.5.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.5.0) (2025-01-03)
+
+### Features
+
+* add an AmsNetId property to the local api. can be used to connect to the TwinCAT Usermode Runtime ([41246f9](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/41246f9c2f9f6703d240e4bb85ff4f65a84603b2))
+* implement the new AmsNetId for all AdsClient connections ([cb83ae3](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/cb83ae32375b6a1102f89b70e27a01de09104e42))
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.4.3) (2024-11-18)
 
