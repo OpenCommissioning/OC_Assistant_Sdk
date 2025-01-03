@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using TwinCAT.Ads;
 
 namespace OC.Assistant.Sdk;
 
@@ -52,6 +53,11 @@ public class ApiLocal
     {
         TcRestart?.Invoke();
     }
+    
+    /// <summary>
+    /// The TwinCAT <see cref="AmsNetId"/>.
+    /// </summary>
+    public AmsNetId NetId { get; internal set; } = AmsNetId.Local;
 
     /// <summary>
     /// Sends a message to the remote connection of the <see cref="OC.Assistant"/>.

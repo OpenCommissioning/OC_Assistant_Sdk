@@ -24,7 +24,7 @@ internal class TcAdsClient
     public TcAdsClient(int port, int writeSize, int readSize)
     {
         _adsClient = new AdsClient();
-        _adsClient.Connect(port);
+        _adsClient.Connect(ApiLocal.Interface.NetId, port);
         
         AdsSymbolLoader = (IAdsSymbolLoader)SymbolLoaderFactory
             .Create(_adsClient, new SymbolLoaderSettings(SymbolsLoadMode.Flat));
