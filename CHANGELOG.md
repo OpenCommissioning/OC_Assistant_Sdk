@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.6.0"></a>
+## [1.6.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.6.0) (2025-01-28)
+
+### Features
+
+* add a Stopwatch extension class with a high-precision-waitable-timer. the old extension method WaitUntil is marked as deprecated ([3ae930d](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/3ae930dd5f0493b06a3030b15290dfbff8059c9b))
+
 <a name="1.5.0"></a>
 ## [1.5.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.5.0) (2025-01-03)
 
