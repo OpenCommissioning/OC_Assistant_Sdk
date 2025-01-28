@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Xml.Linq;
 
 namespace OC.Assistant.Sdk.Plugin;
@@ -268,7 +267,7 @@ public abstract class PluginBase : IPluginController
                 
                 _isRunning = true;
                 Started?.Invoke();
-                var stopwatch = new Stopwatch();
+                var stopwatch = new StopwatchEx();
                 while (!CancellationToken.IsCancellationRequested)
                 {
                     stopwatch.WaitUntil(1);

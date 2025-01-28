@@ -13,6 +13,10 @@ public static class StopwatchExtension
     /// <param name="stopwatch">The <see cref="System.Diagnostics.Stopwatch"/> to be extended.</param>
     /// <param name="millisecondsTimeout">The number of milliseconds.</param>
     /// </summary>
+    /// <remarks>
+    /// Deprecated extension method. Use <see cref="StopwatchEx"/> instead.
+    /// </remarks>
+    [Obsolete("Deprecated extension method. Use StopwatchEx instead.")]
     public static void WaitUntil(this Stopwatch stopwatch, int millisecondsTimeout)
     {
         var delta = millisecondsTimeout - (int) stopwatch.Elapsed.TotalMilliseconds;
