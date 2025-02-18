@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.6.1"></a>
+## [1.6.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.6.1) (2025-02-18)
+
+### Bug Fixes
+
+* nuget package multi targeting ([a72a528](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/a72a52899a8d79002c9c25ec484254b118b5d546))
+
 <a name="1.6.0"></a>
 ## [1.6.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.6.0) (2025-01-28)
 
