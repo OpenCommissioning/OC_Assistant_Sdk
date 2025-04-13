@@ -21,10 +21,10 @@ internal class TcAdsClient
     /// <param name="port">The ADS port to connect to.</param>
     /// <param name="writeSize">The size of the write buffer.</param>
     /// <param name="readSize">The size of the read buffer.</param>
-    public TcAdsClient(int port, int writeSize, int readSize)
+    public TcAdsClient(int writeSize, int readSize)
     {
         _adsClient = new AdsClient();
-        _adsClient.Connect(ApiLocal.Interface.NetId, port);
+        _adsClient.Connect(ApiLocal.Interface.NetId, ApiLocal.Interface.Port);
         
         AdsSymbolLoader = (IAdsSymbolLoader)SymbolLoaderFactory
             .Create(_adsClient, new SymbolLoaderSettings(SymbolsLoadMode.Flat));
