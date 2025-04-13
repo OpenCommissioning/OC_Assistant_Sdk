@@ -18,7 +18,6 @@ internal class TcAdsClient
     /// <summary>
     /// Initializes a new instance of the <see cref="TcAdsClient"/>.
     /// </summary>
-    /// <param name="port">The ADS port to connect to.</param>
     /// <param name="writeSize">The size of the write buffer.</param>
     /// <param name="readSize">The size of the read buffer.</param>
     public TcAdsClient(int writeSize, int readSize)
