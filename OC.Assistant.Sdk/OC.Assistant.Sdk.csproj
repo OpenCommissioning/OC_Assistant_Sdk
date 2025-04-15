@@ -6,7 +6,7 @@
         <Company>Spiratec AG</Company>
         <LangVersion>default</LangVersion>
         <TargetFrameworks>net8.0;net481</TargetFrameworks>
-		<Version>1.6.1</Version>
+		<Version>1.7.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>OC.Assistant.Sdk</Title>
 		<Authors>open commissioning</Authors>

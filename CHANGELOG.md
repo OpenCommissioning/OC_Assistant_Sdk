@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.7.0"></a>
+## [1.7.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.0) (2025-04-15)
+
+### Features
+
+* implement a dynamic plc port for the ADS client ([f102bd1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/f102bd14d02695172aac8672a7112d569b38cbf5))
+
 <a name="1.6.1"></a>
 ## [1.6.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.6.1) (2025-02-18)
 
