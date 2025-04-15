@@ -254,12 +254,12 @@ public abstract class PluginBase : IPluginController
                 {
                     case IoType.None: break;
                     case IoType.Struct:
-                        _tcAdsClient = new TcAdsClient(851, OutputStructure.Length, InputStructure.Length);
+                        _tcAdsClient = new TcAdsClient(OutputStructure.Length, InputStructure.Length);
                         _tcAdsClient.SetReadIndex($"GVL_{_name}.Inputs");
                         _tcAdsClient.SetWriteIndex($"GVL_{_name}.Outputs");
                         break;
                     case IoType.Address:
-                        _tcAdsClient = new TcAdsClient(851, OutputAddress.Length, InputAddress.Length);
+                        _tcAdsClient = new TcAdsClient(OutputAddress.Length, InputAddress.Length);
                         _tcAdsClient.SetReadIndex($"GVL_{_name}.I{InputAddress[0]}");
                         _tcAdsClient.SetWriteIndex($"GVL_{_name}.Q{OutputAddress[0]}");
                         break;
