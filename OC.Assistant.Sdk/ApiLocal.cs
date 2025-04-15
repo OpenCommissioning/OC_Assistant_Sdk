@@ -35,16 +35,6 @@ public class ApiLocal
     /// Singleton interface for the <see cref="ApiLocal"/>.
     /// </summary>
     public static ApiLocal Interface => LazyInstance.Value;
-    
-    /// <summary>
-    /// Updates the Sil plugin by the given name.
-    /// </summary>
-    /// <param name="name">The name of the plugin instance.</param>
-    /// <param name="delete">The plugin instance will be deleted if true.</param>
-    internal void UpdateSil(string name, bool delete)
-    {
-        SilUpdate?.Invoke(name, delete);
-    }
 
     /// <summary>
     /// Triggers the <see cref="TcRestart"/> event.
@@ -58,6 +48,11 @@ public class ApiLocal
     /// The TwinCAT <see cref="AmsNetId"/>.
     /// </summary>
     public AmsNetId NetId { get; internal set; } = AmsNetId.Local;
+    
+    /// <summary>
+    /// The TwinCAT PLC Port.
+    /// </summary>
+    public int Port { get; internal set; } = 851;
 
     /// <summary>
     /// Sends a message to the remote connection of the <see cref="OC.Assistant"/>.
@@ -88,11 +83,6 @@ public class ApiLocal
     /// Is raised when a project is connected and TwinCAT has been restarted.
     /// </summary>
     public event Action? TcRestart;
-
-    /// <summary>
-    /// Is raised when <see cref="UpdateSil"/> has been called.
-    /// </summary>
-    public event Action<string, bool>? SilUpdate;
     
     private void OnReceived(ApiMessage message)
     {

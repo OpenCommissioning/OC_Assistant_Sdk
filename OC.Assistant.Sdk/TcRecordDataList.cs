@@ -26,7 +26,7 @@ public class TcRecordDataList
             try
             {
                 using var client = new AdsClient();
-                client.Connect(ApiLocal.Interface.NetId, 851);
+                client.Connect(ApiLocal.Interface.NetId, ApiLocal.Interface.Port);
                 var deviceList = (uint[]) client.ReadValue("GVL_Core.refSystem.fbRecordData.aDeviceList");
 
                 lock (_lock)
