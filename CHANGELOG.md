@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.7.1"></a>
+## [1.7.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.1) (2025-04-24)
+
+### Bug Fixes
+
+* update ADS Symbol for record data devicelist ([54e311f](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/54e311ff4ebf19757b571e54f0eca55ca1175dfd))
+
 <a name="1.7.0"></a>
 ## [1.7.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.0) (2025-04-15)
 
