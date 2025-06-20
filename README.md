@@ -19,6 +19,9 @@ The official SDK for creating
     <!-- Optional directory to search dlls at runtime. Can be added multiple times. -->
     <AdditionalDirectory>path\to\directory1</AdditionalDirectory>
     <AdditionalDirectory>path\to\directory2</AdditionalDirectory>
+    <!-- Optional url and type of the plugin repository. -->
+    <RepositoryUrl>https://github.com/YourProfile/YourPluginRepo</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
 </Plugin>
 ```
 To run your plugin, simply place your *.dll and *.plugin files in the directory or a subdirectory of the ```OC.Assistant.exe```
