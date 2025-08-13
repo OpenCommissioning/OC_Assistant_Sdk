@@ -73,15 +73,15 @@ public class ApiLocal
     public event Action<double>? TimeScalingChanged;
     
     /// <summary>
-    /// Triggers the <see cref="TcRestart"/> event.
+    /// Triggers the <see cref="TcRestarted"/> event.
     /// </summary>
     internal void TriggerTcRestart()
     {
-        TcRestart?.Invoke();
+        TcRestarted?.Invoke();
     }
     
     /// <summary>
     /// Is raised when a project is connected and TwinCAT has been restarted.
     /// </summary>
-    public event Action? TcRestart;
+    public event Action? TcRestarted;
 }

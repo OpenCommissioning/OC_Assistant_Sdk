@@ -16,7 +16,7 @@ public class TcRecordDataList
     public TcRecordDataList()
     {
         Fetch();
-        ApiLocal.Interface.TcRestart += Fetch;
+        ApiLocal.Interface.TcRestarted += Fetch;
     }
     
     private void Fetch()
