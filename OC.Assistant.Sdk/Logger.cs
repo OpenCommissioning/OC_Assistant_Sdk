@@ -44,25 +44,25 @@ public static class Logger
     /// <summary>Represents the method that will handle a logging event.</summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="message">The message.</param>
-    public delegate void LogHandler(object sender, string message);
+    internal delegate void LogHandler(object sender, string message);
     
     /// <summary>
     /// An info has been logged.
     /// </summary>
-    public static event LogHandler? Info;
+    internal static event LogHandler? Info;
     
     /// <summary>
     /// A warning has been logged.
     /// </summary>
-    public static event LogHandler? Warning;
+    internal static event LogHandler? Warning;
     
     /// <summary>
     /// An error has been logged.
     /// </summary>
-    public static event LogHandler? Error;
+    internal static event LogHandler? Error;
     
     /// <summary>
     /// Enables/disables verbose messages.
     /// </summary>
-    public static bool Verbose { get; set; }
+    internal static bool Verbose { get; set; }
 }
