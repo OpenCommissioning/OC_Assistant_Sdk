@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.7.2"></a>
+## [1.7.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.2) (2025-08-13)
+
+### Bug Fixes
+
+* adapt API to match new Assistant implementation ([006983f](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/006983f7cf2a2b07b6deb856c8e4da0544a69553))
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.1) (2025-04-24)
 
