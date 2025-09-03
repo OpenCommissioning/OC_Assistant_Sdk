@@ -7,7 +7,7 @@ namespace OC.Assistant.Sdk;
 /// <summary>
 /// Custom TcAdsClient with an underlying <see cref="TwinCAT.Ads.AdsClient"/>.
 /// </summary>
-internal class TcAdsClient
+internal class TcAdsClient : IClient
 {
     private readonly AdsClient _adsClient;
     private IAdsSymbolLoader AdsSymbolLoader { get; }

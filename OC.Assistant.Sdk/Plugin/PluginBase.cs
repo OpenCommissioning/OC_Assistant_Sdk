@@ -67,7 +67,7 @@ public abstract class PluginBase : IPluginController
     /// <br/>
     /// Is updated before every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] InputBuffer => _tcAdsClient?.ReadBuffer ?? [];
+    protected byte[] InputBuffer => _client?.ReadBuffer ?? [];
         
     /// <summary>
     /// Buffer with TwinCAT write data (e.g. plugin outputs).
@@ -78,7 +78,7 @@ public abstract class PluginBase : IPluginController
     /// <br/>
     /// Is written after every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] OutputBuffer => _tcAdsClient?.WriteBuffer ?? [];
+    protected byte[] OutputBuffer => _client?.WriteBuffer ?? [];
 
     /// <summary>
     /// Writes data from the <see cref="OutputBuffer"/> to TwinCAT.<br/>
@@ -86,7 +86,7 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     protected void TcWrite()
     {
-        _tcAdsClient?.Write();
+        _client?.Write();
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public abstract class PluginBase : IPluginController
     /// <param name="length">Data length.</param>
     protected void TcWrite(byte[] source, int sourceOffset, int destinationOffset, int length)
     {
-        _tcAdsClient?.Write(source, sourceOffset, destinationOffset, length);
+        _client?.Write(source, sourceOffset, destinationOffset, length);
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     protected void TcRead()
     {
-        _tcAdsClient?.Read();
+        _client?.Read();
     }
     
     /// <summary>
@@ -116,7 +116,7 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     protected void TcReadAll()
     {
-        _tcAdsClient?.ReadAll();
+        _client?.ReadAll();
     }
         
     /// <summary>
@@ -188,7 +188,7 @@ public abstract class PluginBase : IPluginController
     private bool _ioChanged;
     private IoType _ioType = IoType.None;
     private int _delayAfterStart;
-    private TcAdsClient? _tcAdsClient;
+    private IClient? _client;
     private CancellationTokenSource _cancellationTokenSource = new();
     private readonly ParameterCollection _parameters = new();
     private bool _customReadWrite;
@@ -238,6 +238,37 @@ public abstract class PluginBase : IPluginController
         _parameters.Add(this, type.BaseType?.GetField(nameof(_outputAddress), BindingFlags.NonPublic | BindingFlags.Instance));
     }
     
+    
+    private int WriteSize => _ioType == IoType.Struct ? OutputStructure.Length : OutputAddress.Length;
+    private int ReadSize => _ioType == IoType.Struct ? InputStructure.Length : InputAddress.Length;
+
+    private void InitializeClient()
+    {
+        if (_ioType == IoType.None || _name is null) return;
+        switch (ApiLocal.Interface.CommunicationType)
+        {
+            case CommunicationType.TcpIp:
+                _client = new MemoryClient(WriteSize, ReadSize);
+                _client.SetReadIndex(_name);
+                _client.SetWriteIndex(_name);
+                break;
+            case CommunicationType.Twincat:
+                _client = new TcAdsClient(WriteSize, ReadSize);
+                switch (_ioType)
+                {
+                    case IoType.Struct:
+                        _client.SetReadIndex($"GVL_{_name}.Inputs");
+                        _client.SetWriteIndex($"GVL_{_name}.Outputs");
+                        break;
+                    case IoType.Address:
+                        _client.SetReadIndex($"GVL_{_name}.I{InputAddress[0]}");
+                        _client.SetWriteIndex($"GVL_{_name}.Q{OutputAddress[0]}");
+                        break;
+                }
+                break;
+        }
+    }
+    
     private void Cycle()
     {
         _readyToStart = false;
@@ -250,30 +281,16 @@ public abstract class PluginBase : IPluginController
             
             if (OnSave() && OnStart())
             {
-                switch (_ioType)
-                {
-                    case IoType.None: break;
-                    case IoType.Struct:
-                        _tcAdsClient = new TcAdsClient(OutputStructure.Length, InputStructure.Length);
-                        _tcAdsClient.SetReadIndex($"GVL_{_name}.Inputs");
-                        _tcAdsClient.SetWriteIndex($"GVL_{_name}.Outputs");
-                        break;
-                    case IoType.Address:
-                        _tcAdsClient = new TcAdsClient(OutputAddress.Length, InputAddress.Length);
-                        _tcAdsClient.SetReadIndex($"GVL_{_name}.I{InputAddress[0]}");
-                        _tcAdsClient.SetWriteIndex($"GVL_{_name}.Q{OutputAddress[0]}");
-                        break;
-                }
-                
+                InitializeClient();
                 _isRunning = true;
                 Started?.Invoke();
                 var stopwatch = new StopwatchEx();
                 while (!CancellationToken.IsCancellationRequested)
                 {
                     stopwatch.WaitUntil(1);
-                    if (_ioType != IoType.None && !_customReadWrite) _tcAdsClient?.Read();
+                    if (_ioType != IoType.None && !_customReadWrite) _client?.Read();
                     OnUpdate();
-                    if (_ioType != IoType.None && !_customReadWrite) _tcAdsClient?.Write();
+                    if (_ioType != IoType.None && !_customReadWrite) _client?.Write();
                 }
 
                 Stopping?.Invoke();
@@ -287,7 +304,7 @@ public abstract class PluginBase : IPluginController
         
         _isRunning = false;
         _readyToStart = true;
-        _tcAdsClient?.Disconnect();
+        _client?.Disconnect();
         Stopped?.Invoke();
     }
 

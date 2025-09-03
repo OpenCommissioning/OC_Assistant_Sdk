@@ -12,6 +12,7 @@ public class ApiLocal
     private AmsNetId _netId = AmsNetId.Local;
     private int _port = 851;
     private double _timeScaling = 1.0;
+    private CommunicationType _communicationType = CommunicationType.TcpIp;
     
     /// <summary>
     /// Singleton interface for the <see cref="ApiLocal"/>.
@@ -71,6 +72,24 @@ public class ApiLocal
     /// Is raised when the TimeScaling value has been changed.
     /// </summary>
     public event Action<double>? TimeScalingChanged;
+    
+    /// <summary>
+    /// The CommunicationType value.
+    /// </summary>
+    public CommunicationType CommunicationType
+    {
+        get => _communicationType;
+        internal set
+        {
+            _communicationType = value;
+            CommunicationTypeChanged?.Invoke(value);
+        }
+    }
+    
+    /// <summary>
+    /// Is raised when the CommunicationType value has been changed.
+    /// </summary>
+    public event Action<CommunicationType>? CommunicationTypeChanged;
     
     /// <summary>
     /// Triggers the <see cref="TcRestarted"/> event.
