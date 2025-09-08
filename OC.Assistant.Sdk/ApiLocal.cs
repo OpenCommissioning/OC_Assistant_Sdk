@@ -1,6 +1,4 @@
-﻿using TwinCAT.Ads;
-
-namespace OC.Assistant.Sdk;
+﻿namespace OC.Assistant.Sdk;
 
 /// <summary>
 /// Represents the local implementation of the Assistant API.
@@ -9,7 +7,7 @@ public class ApiLocal
 {
     private static readonly Lazy<ApiLocal> LazyInstance = new(() => new ApiLocal());
     
-    private AmsNetId _netId = AmsNetId.Local;
+    private string _netId = "192.168.1.1.1.1";
     private int _port = 851;
     private double _timeScaling = 1.0;
     private CommunicationType _communicationType = CommunicationType.TcpIp;
@@ -20,9 +18,9 @@ public class ApiLocal
     public static ApiLocal Interface => LazyInstance.Value;
 
     /// <summary>
-    /// The TwinCAT <see cref="AmsNetId"/>.
+    /// The TwinCAT AmsNetId.
     /// </summary>
-    public AmsNetId NetId
+    public string NetId
     {
         get => _netId;
         internal set
@@ -33,9 +31,9 @@ public class ApiLocal
     }
     
     /// <summary>
-    /// Is raised when the TwinCAT <see cref="AmsNetId"/> has been changed.
+    /// Is raised when the TwinCAT AmsNetId has been changed.
     /// </summary>
-    public event Action<AmsNetId>? NetIdChanged;
+    public event Action<string>? NetIdChanged;
 
     /// <summary>
     /// The TwinCAT PLC Port.

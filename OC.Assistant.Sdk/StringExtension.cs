@@ -90,4 +90,21 @@ internal static class StringExtension
         if (string.IsNullOrEmpty(value)) return "";
         return value.Length == 1 ? $"{char.ToUpper(value[0])}" : $"{char.ToUpper(value[0])}{value.Substring(1)}";
     }
+    
+    /// Converts the input string to a format compatible with PLC naming conventions.
+    /// <param name="input">The input string to be converted.</param>
+    /// <return>Returns the PLC-compatible string. If the input string is already PLC-compatible, it is returned unchanged; otherwise, it is wrapped with backticks (`).</return>
+    public static string MakePlcCompatible(this string input)
+        => input.IsPlcCompatible() ? input : $"`{input}`";
+    
+    private static Regex InvalidCharacters { get; } = new ("[^a-zA-Z0-9_]+");
+
+    /// <summary>
+    /// Checks if the input string is compatible with PLC naming conventions.
+    /// </summary>
+    /// <param name="input">The input string to verify.</param>
+    /// <returns>Returns <c>true</c> if the input string is PLC compatible; otherwise, <c>false</c>.</returns>
+    public static bool IsPlcCompatible(this string input)
+        => !string.IsNullOrEmpty(input) && !InvalidCharacters.IsMatch(input);
+    
 }

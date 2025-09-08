@@ -3,7 +3,7 @@
 /// <summary>
 /// Client interface for cyclic I/O exchange.
 /// </summary>
-internal interface IClient
+public interface IClient
 {
     /// <summary>
     /// Buffer to store data to write.

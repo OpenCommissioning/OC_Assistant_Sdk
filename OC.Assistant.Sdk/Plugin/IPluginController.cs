@@ -36,7 +36,7 @@ internal interface IPluginController
     /// <summary>
     /// Is raised when the plugin has been started successfully.
     /// </summary>
-    event Action Started;
+    event Func<IClient?> Started;
     
     /// <summary>
     /// Is raised when the plugin has been stopped.

@@ -237,23 +237,19 @@ public abstract class PluginBase : IPluginController
         _parameters.Add(this, type.BaseType?.GetField(nameof(_inputAddress), BindingFlags.NonPublic | BindingFlags.Instance));
         _parameters.Add(this, type.BaseType?.GetField(nameof(_outputAddress), BindingFlags.NonPublic | BindingFlags.Instance));
     }
-    
-    
-    private int WriteSize => _ioType == IoType.Struct ? OutputStructure.Length : OutputAddress.Length;
-    private int ReadSize => _ioType == IoType.Struct ? InputStructure.Length : InputAddress.Length;
 
     private void InitializeClient()
     {
-        if (_ioType == IoType.None || _name is null) return;
+        if (_ioType == IoType.None || _name is null || _client is null) return;
         switch (ApiLocal.Interface.CommunicationType)
         {
             case CommunicationType.TcpIp:
-                _client = new MemoryClient(WriteSize, ReadSize);
+                //_client = new MemoryClient(WriteSize, ReadSize);
                 _client.SetReadIndex(_name);
                 _client.SetWriteIndex(_name);
                 break;
             case CommunicationType.Twincat:
-                _client = new TcAdsClient(WriteSize, ReadSize);
+                //_client = new TcAdsClient(WriteSize, ReadSize);
                 switch (_ioType)
                 {
                     case IoType.Struct:
@@ -281,9 +277,9 @@ public abstract class PluginBase : IPluginController
             
             if (OnSave() && OnStart())
             {
-                InitializeClient();
                 _isRunning = true;
-                Started?.Invoke();
+                _client = Started?.Invoke();
+                InitializeClient();
                 var stopwatch = new StopwatchEx();
                 while (!CancellationToken.IsCancellationRequested)
                 {
@@ -369,12 +365,12 @@ public abstract class PluginBase : IPluginController
         _cancellationTokenSource.Cancel();
     }
     
-    private event Action? Started;
+    private event Func<IClient?>? Started;
     private event Action? Stopped;
     private event Action? Starting;
     private event Action? Stopping;
     
-    event Action? IPluginController.Started
+    event Func<IClient?>? IPluginController.Started
     {
         add => Started += value;
         remove => Started -= value;
