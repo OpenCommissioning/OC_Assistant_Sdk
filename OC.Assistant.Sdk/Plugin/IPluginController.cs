@@ -101,4 +101,14 @@ internal interface IPluginController
     /// Defines the plugin output addresses.
     /// </summary>
     int[] OutputAddress { get; }
+
+    /// <summary>
+    /// Gets the expected byte size of the input buffer.
+    /// </summary>
+    int InputSize { get; }
+
+    /// <summary>
+    /// Gets the expected byte size of the output buffer.
+    /// </summary>
+    int OutputSize { get; }
 }

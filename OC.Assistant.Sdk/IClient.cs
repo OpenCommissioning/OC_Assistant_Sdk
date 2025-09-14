@@ -24,13 +24,17 @@ public interface IClient
     /// Sets the write index to the given symbol.
     /// </summary>
     /// <param name="symbolName">The symbol name.</param>
-    void SetWriteIndex(string symbolName);
+    /// <param name="prefix">Optional prefix for the symbolName.</param>
+    /// <param name="suffix">Optional suffix for the symbolName.</param>
+    void SetWriteIndex(string symbolName, string? prefix = null, string? suffix = null);
 
     /// <summary>
     /// Sets the read index to the given symbol.
     /// </summary>
     /// <param name="symbolName">The symbol name.</param>
-    void SetReadIndex(string symbolName);
+    /// <param name="prefix">Optional prefix for the symbolName.</param>
+    ///<param name="suffix">Optional suffix for the symbolName.</param>
+    void SetReadIndex(string symbolName, string? prefix = null, string? suffix = null);
 
     /// <summary>
     /// Writes data from the <see cref="WriteBuffer"/> to the server.
@@ -55,4 +59,24 @@ public interface IClient
     /// Reads data from the server read- and write buffer.
     /// </summary>
     void ReadAll();
+    
+    /// <summary>
+    /// The interface for the record data server.
+    /// </summary>
+    IRecordDataServer RecordDataServer { get; }
+    
+    /// <summary>
+    /// The client communication type.
+    /// </summary>
+    CommunicationType CommunicationType { get; }
+    
+    /// <summary>
+    /// The server address.
+    /// </summary>
+    string ServerAddress { get; }
+    
+    /// <summary>
+    /// The server port.
+    /// </summary>
+    int ServerPort { get; }
 }

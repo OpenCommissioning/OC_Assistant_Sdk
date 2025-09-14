@@ -8,11 +8,12 @@ namespace OC.Assistant.Sdk;
 public interface IAppControl
 {
     /// <summary>
-    /// Connects to a project file or a Visual Studio Solution.
+    /// Connects to a project file.
     /// </summary>
-    /// <param name="projectFile">The path of the project file or the Visual Studio Solution.</param>
-    /// <param name="projectFolder">The path of the project folder, if any.</param>
-    public void Connect(string projectFile, string? projectFolder = null);
+    /// <param name="projectFile">The path of the project file.</param>
+    /// <param name="mode">The <see cref="CommunicationType"/>.</param>
+    /// <param name="parameter">Optional parameter.</param>
+    public void Connect(string projectFile, CommunicationType mode, object? parameter);
     
     /// <summary>
     /// Disconnects from the currently connected Visual Studio Solution.
@@ -30,15 +31,15 @@ public interface IAppControl
     public void Stop();
     
     /// <summary>
-    /// 
+    /// Adds content to the welcome page.
     /// </summary>
     /// <param name="content"></param>
     public void AddWelcomePageContent(object content);
     
     /// <summary>
-    /// Is raised with the project file and folder when a project gets connected.
+    /// Is raised with the project file and optional parameter.
     /// </summary>
-    public event Action<string, string?>? Connected;
+    public event Action<string, CommunicationType, object?>? Connected;
     
     /// <summary>
     /// Is raised when the project gets disconnected.

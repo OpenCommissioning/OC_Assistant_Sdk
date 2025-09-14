@@ -33,6 +33,8 @@ internal class XPlugin
             new XAttribute(nameof(Name), plugin.Name),
             new XAttribute(nameof(Type), plugin.Type!.Name),
             new XAttribute(nameof(IoType), plugin.PluginController!.IoType.ToString()),
+            new XAttribute(nameof(InputSize), plugin.PluginController.InputSize),
+            new XAttribute(nameof(OutputSize), plugin.PluginController.OutputSize),
             new XElement(nameof(Parameter), plugin.PluginController.Parameter.XElement.Nodes()),
             new XElement(nameof(InputStructure), plugin.PluginController.InputStructure.XElement.Nodes()),
             new XElement(nameof(OutputStructure), plugin.PluginController.OutputStructure.XElement.Nodes()));
@@ -52,6 +54,18 @@ internal class XPlugin
     /// Gets the IoType attribute value.
     /// </summary>
     public string IoType => Element.GetOrCreateAttribute(nameof(IoType)).Value;
+    
+    /// <summary>
+    /// Gets the InputSize in bytes.
+    /// </summary>
+    public int InputSize => 
+        int.TryParse(Element.GetOrCreateAttribute(nameof(InputSize)).Value , out var value) ? value : 0;
+    
+    /// <summary>
+    /// Gets the OutputSize in bytes.
+    /// </summary>
+    public int OutputSize => 
+        int.TryParse(Element.GetOrCreateAttribute(nameof(OutputSize)).Value , out var value) ? value : 0;
 
     /// <summary>
     /// Gets the Parameter <see cref="XElement"/>.
