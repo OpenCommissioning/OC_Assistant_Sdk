@@ -24,7 +24,7 @@ The official SDK for creating
     <RepositoryType>github</RepositoryType>
 </Plugin>
 ```
-To run your plugin, simply place your *.dll and *.plugin files in the directory or a subdirectory of the ```OC.Assistant.exe```
+To run your plugin, place your *.dll and *.plugin files in the ```Plugins``` folder of the ```OC.Assistant.exe```
 
 Further details how to use ```Attributes```, ```Properties``` and ```Methods``` can be found within the SDK. \
 You can also learn how to build your own plugin by reviewing existing ones on our [Open Commissioning GitHub page](https://github.com/OpenCommissioning). \
