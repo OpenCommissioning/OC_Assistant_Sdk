@@ -40,17 +40,16 @@ public class Message
     /// <returns></returns>
     public new string ToString()
     {
-
-            return System.Text.Encoding.ASCII.GetString(_buffer, 0, Length);
-        
+        return System.Text.Encoding.ASCII.GetString(_buffer, 0, Length);
     }
 
     /// <summary>
-    /// Converts a given string to the message buffer.
+    /// Encodes a set of characters from the specified string into the message buffer.
     /// </summary>
     /// <param name="value">The given <see cref="string"/> value.</param>
     public void GetString(string value)
     {
-        Buffer = System.Text.Encoding.ASCII.GetBytes(value);
+        Length = Math.Min(_buffer.Length, value.Length);
+        System.Text.Encoding.ASCII.GetBytes(value, 0, Length, Buffer, 0);
     }
 }

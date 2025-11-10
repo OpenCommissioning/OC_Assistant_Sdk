@@ -26,7 +26,7 @@ internal static class ObjectExtension
         catch
         {
             Logger.LogWarning(typeof(ObjectExtension), $"Unable to convert value {value} to type {type}", true);
-            return default;
+            return null;
         }
     }
 }

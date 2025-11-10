@@ -31,10 +31,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Beckhoff.TwinCAT.Ads" Version="6.1.260" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Include="Resources\oc_logo.png" Pack="true" PackagePath="" />
     </ItemGroup>
 
