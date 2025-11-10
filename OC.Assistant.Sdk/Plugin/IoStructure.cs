@@ -16,7 +16,12 @@ internal class IoStructure(string rootName) : IIoStructure
         var varType = arraySize > 0 
             ? $"ARRAY [0..{arraySize - 1}] OF {type.Name()}" 
             : type.Name();
-        XElement.Add(new XElement("Var", new XElement("Name", name), new XElement("Type", varType)));
+        
+        XElement.Add(
+            new XElement("Var", 
+                new XElement("Name", name), 
+                new XElement("Type", varType),
+                new XElement("BitOffset", _bitSize)));
         
         //Here we fill up to full byte-size if the current variable is not a bit
         var mod8 = _bitSize % 8;

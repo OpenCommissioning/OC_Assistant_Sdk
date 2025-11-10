@@ -15,7 +15,7 @@ namespace OC.Assistant.Sdk.Plugin;
 /// <c>Attribute</c> <see cref="PluginCustomReadWrite"/><br/> can be used to disable the cyclic read and write command.<br/>
 /// <br/>
 /// <c>Attribute</c> <see cref="PluginParameter"/><br/>can be used to define a private field as a parameter.
-/// All parameters are shown in the properties window in the UI.<br/>
+/// All parameters are shown in the property window in the UI.<br/>
 /// <br/>
 /// <c>Method</c> <see cref="OnSave"/><br/>
 /// <inheritdoc cref="OnSave"/><br/>
@@ -32,12 +32,12 @@ namespace OC.Assistant.Sdk.Plugin;
 /// <inheritdoc cref="OnStop"/><br/>
 /// <br/>
 /// <c>Field</c> <see cref="OutputBuffer"/><br/>
-/// is used to transfer data from the plugin to TwinCAT.
+/// is used to transfer data from the plugin to the server.
 /// The size is either defined by the <see cref="OutputStructure"/> or the <see cref="OutputAddress"/>
 /// depending on the attribute <see cref="PluginIoType"/>.<br/>
 /// <br/>
 /// <c>Field</c> <see cref="InputBuffer"/><br/>
-/// is used to transfer data from TwinCAT to the plugin.
+/// is used to transfer data from the server to the plugin.
 /// The size is defined by the <see cref="InputStructure"/> or the <see cref="InputAddress"/>
 /// depending on the attribute <see cref="PluginIoType"/>.<br/>
 /// <br/>
@@ -59,64 +59,78 @@ public abstract class PluginBase : IPluginController
     }
     
     /// <summary>
-    /// Buffer with TwinCAT read data (e.g. plugin inputs).
-    /// Is used to transfer data from TwinCAT to the plugin.<br/>
+    /// Buffer for plugin inputs.
+    /// Is used to transfer data from the server to the plugin.<br/>
     /// <br/>
     /// The size is either defined by the <see cref="InputStructure"/> or the <see cref="InputAddress"/>
     /// depending on the attribute <see cref="PluginIoType"/>.<br/>
     /// <br/>
     /// Is updated before every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] InputBuffer => _tcAdsClient?.ReadBuffer ?? [];
+    protected byte[] InputBuffer => _client?.ReadBuffer ?? [];
         
     /// <summary>
-    /// Buffer with TwinCAT write data (e.g. plugin outputs).
-    /// Is used to transfer data from the plugin to TwinCAT.<br/>
+    /// Buffer for plugin outputs.
+    /// Is used to transfer data from the plugin to the server.<br/>
     /// <br/>
     /// The size is either defined by the <see cref="OutputStructure"/> or the <see cref="OutputAddress"/>
     /// depending on the attribute <see cref="PluginIoType"/>.<br/>
     /// <br/>
     /// Is written after every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] OutputBuffer => _tcAdsClient?.WriteBuffer ?? [];
+    protected byte[] OutputBuffer => _client?.WriteBuffer ?? [];
+    
+    /// <inheritdoc cref="IClient.ServerAddress"/>
+    protected string ServerAddress => _client?.ServerAddress ?? "";
+    
+    /// <inheritdoc cref="IClient.ServerPort"/>
+    protected int ServerPort => _client?.ServerPort ?? 0;
+    
+    /// <inheritdoc cref="IClient.CommunicationType"/>
+    protected CommunicationType CommunicationType => _client?.CommunicationType ?? CommunicationType.Default;
 
     /// <summary>
-    /// Writes data from the <see cref="OutputBuffer"/> to TwinCAT.<br/>
+    /// 
+    /// </summary>
+    protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
+
+    /// <summary>
+    /// Writes data from the <see cref="OutputBuffer"/> to the server.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
     protected void TcWrite()
     {
-        _tcAdsClient?.Write();
+        _client?.Write();
     }
 
     /// <summary>
-    /// Writes data from a custom source to TwinCAT.<br/>
+    /// Writes data from a custom source to the server.<br/>
     /// </summary>
     /// <param name="source">The source data.</param>
     /// <param name="sourceOffset">The source offset.</param>
-    /// <param name="destinationOffset">The TwinCAT relative offset.</param>
+    /// <param name="destinationOffset">The server relative offset.</param>
     /// <param name="length">Data length.</param>
     protected void TcWrite(byte[] source, int sourceOffset, int destinationOffset, int length)
     {
-        _tcAdsClient?.Write(source, sourceOffset, destinationOffset, length);
+        _client?.Write(source, sourceOffset, destinationOffset, length);
     }
 
     /// <summary>
-    /// Reads data from TwinCAT and copies to the <see cref="InputBuffer"/>.<br/>
+    /// Reads data from the server and copies to the <see cref="InputBuffer"/>.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
     protected void TcRead()
     {
-        _tcAdsClient?.Read();
+        _client?.Read();
     }
     
     /// <summary>
-    /// Reads in- and output data from TwinCAT and copies to the
+    /// Reads in- and output data from the server and copies to the
     /// <see cref="InputBuffer"/> and <see cref="OutputBuffer"/>.
     /// </summary>
     protected void TcReadAll()
     {
-        _tcAdsClient?.ReadAll();
+        _client?.ReadAll();
     }
         
     /// <summary>
@@ -188,7 +202,7 @@ public abstract class PluginBase : IPluginController
     private bool _ioChanged;
     private IoType _ioType = IoType.None;
     private int _delayAfterStart;
-    private TcAdsClient? _tcAdsClient;
+    private IClient? _client;
     private CancellationTokenSource _cancellationTokenSource = new();
     private readonly ParameterCollection _parameters = new();
     private bool _customReadWrite;
@@ -199,7 +213,7 @@ public abstract class PluginBase : IPluginController
     [PluginParameter("e.g. 0-1023 or 0,1,2 or a combination")]
     private readonly string _outputAddress = "0-1023";
 
-    [PluginParameter("Automatic start and stop with TwinCAT")]
+    [PluginParameter("Automatic start and stop with the application")]
     private readonly bool _autoStart = true;
     
     private void CollectAttributes()
@@ -237,6 +251,23 @@ public abstract class PluginBase : IPluginController
         _parameters.Add(this, type.BaseType?.GetField(nameof(_inputAddress), BindingFlags.NonPublic | BindingFlags.Instance));
         _parameters.Add(this, type.BaseType?.GetField(nameof(_outputAddress), BindingFlags.NonPublic | BindingFlags.Instance));
     }
+
+    private void InitializeClient()
+    {
+        if (_ioType == IoType.None || _name is null || _client is null) return;
+        
+        switch (_ioType)
+        {
+            case IoType.Struct:
+                _client.SetReadIndex(_name, "GVL_", ".Inputs");
+                _client.SetWriteIndex(_name, "GVL_", ".Outputs");
+                break;
+            case IoType.Address:
+                _client.SetReadIndex(_name, "GVL_", $".I{InputAddress[0]}");
+                _client.SetWriteIndex(_name, "GVL_", $".Q{OutputAddress[0]}");
+                break;
+        }
+    }
     
     private void Cycle()
     {
@@ -250,30 +281,16 @@ public abstract class PluginBase : IPluginController
             
             if (OnSave() && OnStart())
             {
-                switch (_ioType)
-                {
-                    case IoType.None: break;
-                    case IoType.Struct:
-                        _tcAdsClient = new TcAdsClient(OutputStructure.Length, InputStructure.Length);
-                        _tcAdsClient.SetReadIndex($"GVL_{_name}.Inputs");
-                        _tcAdsClient.SetWriteIndex($"GVL_{_name}.Outputs");
-                        break;
-                    case IoType.Address:
-                        _tcAdsClient = new TcAdsClient(OutputAddress.Length, InputAddress.Length);
-                        _tcAdsClient.SetReadIndex($"GVL_{_name}.I{InputAddress[0]}");
-                        _tcAdsClient.SetWriteIndex($"GVL_{_name}.Q{OutputAddress[0]}");
-                        break;
-                }
-                
                 _isRunning = true;
-                Started?.Invoke();
+                _client = Started?.Invoke();
+                InitializeClient();
                 var stopwatch = new StopwatchEx();
                 while (!CancellationToken.IsCancellationRequested)
                 {
                     stopwatch.WaitUntil(1);
-                    if (_ioType != IoType.None && !_customReadWrite) _tcAdsClient?.Read();
+                    if (_ioType != IoType.None && !_customReadWrite) _client?.Read();
                     OnUpdate();
-                    if (_ioType != IoType.None && !_customReadWrite) _tcAdsClient?.Write();
+                    if (_ioType != IoType.None && !_customReadWrite) _client?.Write();
                 }
 
                 Stopping?.Invoke();
@@ -287,7 +304,7 @@ public abstract class PluginBase : IPluginController
         
         _isRunning = false;
         _readyToStart = true;
-        _tcAdsClient?.Disconnect();
+        _client?.Disconnect();
         Stopped?.Invoke();
     }
 
@@ -297,6 +314,18 @@ public abstract class PluginBase : IPluginController
     bool IPluginController.IsRunning => _isRunning;
     bool IPluginController.AutoStart => _autoStart;
     bool IPluginController.IoChanged => _ioChanged;
+    int IPluginController.InputSize => _ioType switch
+    {
+        IoType.Struct => InputStructure.Length,
+        IoType.Address => InputAddress.Length,
+        _ => 0
+    };
+    int IPluginController.OutputSize => _ioType switch
+    {
+        IoType.Struct => OutputStructure.Length,
+        IoType.Address => OutputAddress.Length,
+        _ => 0
+    };
 
     void IPluginController.Initialize(string? name)
     {
@@ -352,12 +381,12 @@ public abstract class PluginBase : IPluginController
         _cancellationTokenSource.Cancel();
     }
     
-    private event Action? Started;
+    private event Func<IClient?>? Started;
     private event Action? Stopped;
     private event Action? Starting;
     private event Action? Stopping;
     
-    event Action? IPluginController.Started
+    event Func<IClient?>? IPluginController.Started
     {
         add => Started += value;
         remove => Started -= value;
