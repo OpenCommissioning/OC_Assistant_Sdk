@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.0.0"></a>
+## [2.0.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.0) (2025-11-10)
+
+### Features
+
+* breaking changes for Assistant v2 ([5422814](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5422814a76fcb3711056dbe43cecbce9708a39f7))
+* new memory-based client for TcpIp communication ([5ed131b](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5ed131b986fc4431de7f33b7adfb5d784f2b7c18))
+
+### Breaking Changes
+
+* breaking changes for Assistant v2 ([5422814](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5422814a76fcb3711056dbe43cecbce9708a39f7))
+
 <a name="1.7.2"></a>
 ## [1.7.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.2) (2025-08-13)
 
