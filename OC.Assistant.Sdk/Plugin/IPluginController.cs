@@ -36,7 +36,7 @@ internal interface IPluginController
     /// <summary>
     /// Is raised when the plugin has been started successfully.
     /// </summary>
-    event Func<IClient?> Started;
+    event Action Started;
     
     /// <summary>
     /// Is raised when the plugin has been stopped.
@@ -52,6 +52,11 @@ internal interface IPluginController
     /// Is raised when the plugin is about to stop.
     /// </summary>
     event Action Stopping;
+    
+    /// <summary>
+    /// Is raised when the client has been requested.
+    /// </summary>
+    event Func<IClient?> ClientRequested;
     
     /// <summary>
     /// <see cref="PluginIoType"/> value.

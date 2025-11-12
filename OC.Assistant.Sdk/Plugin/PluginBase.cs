@@ -89,9 +89,7 @@ public abstract class PluginBase : IPluginController
     /// <inheritdoc cref="IClient.CommunicationType"/>
     protected CommunicationType CommunicationType => _client?.CommunicationType ?? CommunicationType.Default;
 
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <inheritdoc cref="IClient.RecordDataServer"/>
     protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
 
     /// <summary>
@@ -160,7 +158,7 @@ public abstract class PluginBase : IPluginController
     
     /// <summary>
     /// Is called cyclic when <see cref="OnSave"/> and <see cref="OnStart"/> don't fail.<br/>
-    /// Can be cancelled with <see cref="CancellationRequest"/> in case of an error.<br/>
+    /// Can be canceled with <see cref="CancellationRequest"/> in case of an error.<br/>
     /// Before every update, the <see cref="InputBuffer"/> is updated.<br/>
     /// After every update, the <see cref="OutputBuffer"/> is written.
     /// </summary>
@@ -279,22 +277,26 @@ public abstract class PluginBase : IPluginController
             InputStructure.Clear();
             OutputStructure.Clear();
             
-            if (OnSave() && OnStart())
+            if (OnSave())
             {
-                _isRunning = true;
-                _client = Started?.Invoke();
-                InitializeClient();
-                var stopwatch = new StopwatchEx();
-                while (!CancellationToken.IsCancellationRequested)
+                _client = ClientRequested?.Invoke();
+                if (_client is not null && OnStart())
                 {
-                    stopwatch.WaitUntil(1);
-                    if (_ioType != IoType.None && !_customReadWrite) _client?.Read();
-                    OnUpdate();
-                    if (_ioType != IoType.None && !_customReadWrite) _client?.Write();
-                }
+                    _isRunning = true;
+                    Started?.Invoke();
+                    InitializeClient();
+                    var stopwatch = new StopwatchEx();
+                    while (!CancellationToken.IsCancellationRequested)
+                    {
+                        stopwatch.WaitUntil(1);
+                        if (_ioType != IoType.None && !_customReadWrite) _client?.Read();
+                        OnUpdate();
+                        if (_ioType != IoType.None && !_customReadWrite) _client?.Write();
+                    }
 
-                Stopping?.Invoke();
-                OnStop();
+                    Stopping?.Invoke();
+                    OnStop();
+                }
             }
         }
         catch (Exception e)
@@ -381,12 +383,13 @@ public abstract class PluginBase : IPluginController
         _cancellationTokenSource.Cancel();
     }
     
-    private event Func<IClient?>? Started;
+    private event Action? Started;
     private event Action? Stopped;
     private event Action? Starting;
     private event Action? Stopping;
+    private event Func<IClient?>? ClientRequested;
     
-    event Func<IClient?>? IPluginController.Started
+    event Action? IPluginController.Started
     {
         add => Started += value;
         remove => Started -= value;
@@ -408,5 +411,11 @@ public abstract class PluginBase : IPluginController
     {
         add => Stopping += value;
         remove => Stopping -= value;
-    } 
+    }
+    
+    event Func<IClient?>? IPluginController.ClientRequested
+    {
+        add => ClientRequested += value;
+        remove => ClientRequested -= value;
+    }
 }
