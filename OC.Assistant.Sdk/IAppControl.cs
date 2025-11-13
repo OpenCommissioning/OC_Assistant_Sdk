@@ -73,9 +73,9 @@ public interface IAppControl
     public event Action<string?, string?> PluginUpdated;
     
     /// <summary>
-    /// Is raised when a plugin has been started.
+    /// Is raised when a plugin client has been requested.
     /// </summary>
-    public event Func<int, int, IClient>? PluginStarted;
+    public event Func<int, int, IClient>? PluginClientRequested;
 
     /// <summary>
     /// Gets a value indicating whether the connected project is currently running.
