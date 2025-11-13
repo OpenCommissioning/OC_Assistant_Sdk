@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.1) (2025-11-13)
+
+### Bug Fixes
+
+* new internal event for requesting a plugin client ([6b8f44f](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/6b8f44fb991ef5256e57acf450e4a6918e4f7bd6))
+* remove deprecated RecordDataList ([f95ff26](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/f95ff266e386b9c55565b73f0de0ed9fd55c12da))
+
 <a name="2.0.0"></a>
 ## [2.0.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.0) (2025-11-10)
 
