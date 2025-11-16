@@ -76,6 +76,11 @@ public interface IAppControl
     /// Is raised when a plugin client has been requested.
     /// </summary>
     public event Func<int, int, IClient>? PluginClientRequested;
+    
+    /// <summary>
+    /// The TimeScaling value.
+    /// </summary>
+    public double TimeScaling { get; }
 
     /// <summary>
     /// Gets a value indicating whether the connected project is currently running.

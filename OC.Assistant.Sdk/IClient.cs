@@ -71,6 +71,11 @@ public interface IClient
     CommunicationType CommunicationType { get; }
     
     /// <summary>
+    /// The TimeScaling value.
+    /// </summary>
+    public double TimeScaling { get; }
+    
+    /// <summary>
     /// The server address.
     /// </summary>
     string ServerAddress { get; }
