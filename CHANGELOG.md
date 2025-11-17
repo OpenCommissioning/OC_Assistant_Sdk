@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.2) (2025-11-17)
+
+### Bug Fixes
+
+* move TimeScaling to IClient interface for direct access on PluginBase ([337053b](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/337053b47fdcb194c64e1378c6b5903f5a9c3e28))
+* replace CommunicationType enum with a generic System.Type ([d81b5a9](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/d81b5a99991ec089a7cb27d70e03d49df2a72492))
+* rework of RecordData for less complex structure ([d5153aa](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/d5153aaf8491f56f6c9566e01a769f73e4f12bd9))
+* rework of XmlFile ([ab2a8f8](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/ab2a8f823ddd905f945a28c94c178533fa78a282))
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.1) (2025-11-13)
 
