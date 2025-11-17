@@ -5,14 +5,13 @@ namespace OC.Assistant.Sdk;
 
 /// <summary>
 /// Represents a class that manages the project XML file, providing functionality to save and restore
-/// settings, plugins and project structure.
+/// plugins and project-related settings.
 /// </summary>
 internal class XmlFile
 {
     private static readonly Lazy<XmlFile> LazyInstance = new(() => new XmlFile());
     private XDocument? _doc;
-    private string? _path;
-    
+
     /// <summary>
     /// The private constructor.
     /// </summary>
@@ -24,17 +23,17 @@ internal class XmlFile
     /// Singleton instance of the <see cref="XmlFile"/>.
     /// </summary>
     public static XmlFile Instance => LazyInstance.Value;
-    
+
     /// <summary>
     /// Gets or sets the file path for the XML file.
     /// Changing this property triggers the reloading of the XML structure from the specified path.
     /// </summary>
     public string? Path
     {
-        get => _path;
+        get;
         set
         {
-            _path = value;
+            field = value;
             Reload();
         }
     }
@@ -57,17 +56,7 @@ internal class XmlFile
             return;
         }
         
-        _doc = new XDocument(
-            new XElement("Config",
-                new XElement(nameof(Settings),
-                    new XElement(nameof(TcpIpServerAddress), "127.0.0.1"),
-                    new XElement(nameof(TcpIpServerPort), "50100"),
-                    new XElement(nameof(PlcProjectName), "OC"),
-                    new XElement(nameof(PlcTaskName), "PlcTask")),
-                new XElement(nameof(Plugins)),
-                new XElement(nameof(Project),
-                    new XElement(nameof(Hil)),
-                    new XElement(nameof(Main)))));
+        _doc = new XDocument(new XElement("Config"));
         
         Save();
         Reloaded?.Invoke();
@@ -83,125 +72,17 @@ internal class XmlFile
     }
     
     /// <summary>
-    /// Gets the Settings <see cref="XElement"/>.
+    /// Gets the Root <see cref="XElement"/>.
     /// </summary>
-    public XElement Settings => (_doc?.Root).GetOrCreateChild(nameof(Settings));
+    public XElement? Root => _doc?.Root;
     
     /// <summary>
     /// Gets the Plugins <see cref="XElement"/>.
     /// </summary>
-    public XElement Plugins => (_doc?.Root).GetOrCreateChild(nameof(Plugins));
-    
-    /// <summary>
-    /// Gets the Project <see cref="XElement"/>.
-    /// </summary>
-    public XElement Project => (_doc?.Root).GetOrCreateChild(nameof(Project));
-    
-    /// <summary>
-    /// Gets the HiL element.
-    /// </summary>
-    public XElement Hil => Project.GetOrCreateChild(nameof(Hil));
-    
-    /// <summary>
-    /// Gets the main program <see cref="XElement"/> or sets its content.
-    /// </summary>
-    public XElement Main
-    {
-        get => Project.GetOrCreateChild(nameof(Main));
-        set
-        {
-            Project.GetOrCreateChild(nameof(Main)).ReplaceNodes(value.Nodes());
-            Save();       
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the PlcProjectName value.
-    /// </summary>
-    public string PlcProjectName
-    {
-        get => Settings.GetOrCreateChild(nameof(PlcProjectName)).Value;
-        set
-        {
-            Settings.GetOrCreateChild(nameof(PlcProjectName)).Value = value;
-            Save();
-        }
-    }
-    
-    /// <summary>
-    /// Gets or sets the PlcTaskName value.
-    /// </summary>
-    public string PlcTaskName
-    {
-        get => Settings.GetOrCreateChild(nameof(PlcTaskName)).Value;
-        set
-        {
-            Settings.GetOrCreateChild(nameof(PlcTaskName)).Value = value;
-            Save();
-        }
-    }
-    
-    /// <summary>
-    /// Gets or sets the TcpIpServerAddress value.
-    /// </summary>
-    public string TcpIpServerAddress
-    {
-        get => Settings.GetOrCreateChild(nameof(TcpIpServerAddress)).Value;
-        set
-        {
-            Settings.GetOrCreateChild(nameof(TcpIpServerAddress)).Value = value;
-            Save();
-        }
-    }
-    
-    /// <summary>
-    /// Gets or sets the TcpIpServerPort value.
-    /// </summary>
-    public int TcpIpServerPort
-    {
-        get => int.TryParse(Settings.GetOrCreateChild(nameof(TcpIpServerPort)).Value, out var result) ? result : 0;
-        set
-        {
-            Settings.GetOrCreateChild(nameof(TcpIpServerPort)).Value = value.ToString();
-            Save();
-        }
-    }
+    public XElement Plugins => Root.GetOrCreateChild(nameof(Plugins));
     
     /// <summary>
     /// Gets the plugin elements as <see cref="XPlugin"/>.
     /// </summary>
-    public IEnumerable<XPlugin> PluginElements() 
-        => Plugins.Elements().Select(x => new XPlugin(x));
-
-    /// <summary>
-    /// Retrieves the <see cref="XPlugin"/> by the given name.
-    /// </summary>
-    /// <returns>The first <see cref="XPlugin"/> corresponding to the name, if any.</returns>
-    public XPlugin? GetPlugin(string name) 
-        => PluginElements().FirstOrDefault(x => x.Name == name);
-
-    /// <summary>
-    /// Removes all <see cref="XPlugin"/> elements by the given name.
-    /// </summary>
-    public void RemovePlugin(string? name)
-    {
-        if (name is null) return;
-        
-        foreach (var xPlugin in PluginElements().Where(x => x.Name == name))
-        {
-            xPlugin.Element?.Remove();
-        }
-        
-        Save();
-    }
-    
-    /// <summary>
-    /// Updates or adds the given <see cref="Plugin"/> to the <see cref="XmlFile"/>.
-    /// </summary>
-    public void UpdatePlugin(IPlugin plugin, string? oldName = null)
-    {
-        RemovePlugin(oldName ?? plugin.Name);
-        Plugins.Add(new XPlugin(plugin).Element);
-        Save();
-    }
+    public IEnumerable<XPlugin> GetPluginElements() => Plugins.Elements().Select(x => new XPlugin(x));
 }

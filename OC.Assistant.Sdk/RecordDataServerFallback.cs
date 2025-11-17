@@ -2,12 +2,8 @@
 
 internal class RecordDataServerFallback : IRecordDataServer
 {
-    public void WriteReq(RecordDataRequest request)
-        => OnWriteRes?.Invoke(new RecordDataResponse(request.InvokeId, 0, 0));
-    
-    public void ReadReq(RecordDataRequest request)
-        => OnReadRes?.Invoke(new RecordDataResponse(request.InvokeId, 0, 0));
-    
-    public event Action<RecordDataResponse>? OnWriteRes;
-    public event Action<RecordDataResponse>? OnReadRes;
+    public void WriteReq(RecordDataTelegram request) => OnWriteRes?.Invoke(request);
+    public void ReadReq(RecordDataTelegram request) => OnReadRes?.Invoke(request);
+    public event Action<RecordDataTelegram>? OnWriteRes;
+    public event Action<RecordDataTelegram>? OnReadRes;
 }

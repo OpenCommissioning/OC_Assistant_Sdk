@@ -11,9 +11,8 @@ public interface IAppControl
     /// Connects to a project file.
     /// </summary>
     /// <param name="projectFile">The path of the project file.</param>
-    /// <param name="mode">The <see cref="CommunicationType"/>.</param>
-    /// <param name="parameter">Optional parameter.</param>
-    public void Connect(string projectFile, CommunicationType mode, object? parameter);
+    /// <param name="clientType">The client <see cref="Type"/>.</param>
+    public void Connect(string projectFile, Type clientType);
     
     /// <summary>
     /// Disconnects from the currently connected Visual Studio Solution.
@@ -37,9 +36,9 @@ public interface IAppControl
     public void AddWelcomePageContent(object content);
     
     /// <summary>
-    /// Is raised with the project file and optional parameter.
+    /// Is raised with the project file.
     /// </summary>
-    public event Action<string, CommunicationType, object?>? Connected;
+    public event Action<string, Type>? Connected;
     
     /// <summary>
     /// Is raised when the project gets disconnected.
@@ -76,6 +75,11 @@ public interface IAppControl
     /// Is raised when a plugin client has been requested.
     /// </summary>
     public event Func<int, int, IClient>? PluginClientRequested;
+    
+    /// <summary>
+    /// The TimeScaling value.
+    /// </summary>
+    public double TimeScaling { get; }
 
     /// <summary>
     /// Gets a value indicating whether the connected project is currently running.

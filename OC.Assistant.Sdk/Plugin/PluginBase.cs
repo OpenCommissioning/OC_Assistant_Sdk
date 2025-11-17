@@ -86,20 +86,20 @@ public abstract class PluginBase : IPluginController
     /// <inheritdoc cref="IClient.ServerPort"/>
     protected int ServerPort => _client?.ServerPort ?? 0;
     
-    /// <inheritdoc cref="IClient.CommunicationType"/>
-    protected CommunicationType CommunicationType => _client?.CommunicationType ?? CommunicationType.Default;
+    /// <inheritdoc cref="IClient.ClientType"/>
+    protected Type? CommunicationType => _client?.ClientType;
 
     /// <inheritdoc cref="IClient.RecordDataServer"/>
     protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
+    
+    /// <inheritdoc cref="IClient.TimeScaling"/>
+    protected double TimeScaling => _client?.TimeScaling ?? 1;
 
     /// <summary>
     /// Writes data from the <see cref="OutputBuffer"/> to the server.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcWrite()
-    {
-        _client?.Write();
-    }
+    protected void TcWrite() => _client?.Write();
 
     /// <summary>
     /// Writes data from a custom source to the server.<br/>
@@ -109,27 +109,19 @@ public abstract class PluginBase : IPluginController
     /// <param name="destinationOffset">The server relative offset.</param>
     /// <param name="length">Data length.</param>
     protected void TcWrite(byte[] source, int sourceOffset, int destinationOffset, int length)
-    {
-        _client?.Write(source, sourceOffset, destinationOffset, length);
-    }
+        => _client?.Write(source, sourceOffset, destinationOffset, length);
 
     /// <summary>
     /// Reads data from the server and copies to the <see cref="InputBuffer"/>.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcRead()
-    {
-        _client?.Read();
-    }
+    protected void TcRead() => _client?.Read();
     
     /// <summary>
     /// Reads in- and output data from the server and copies to the
     /// <see cref="InputBuffer"/> and <see cref="OutputBuffer"/>.
     /// </summary>
-    protected void TcReadAll()
-    {
-        _client?.ReadAll();
-    }
+    protected void TcReadAll() => _client?.ReadAll();
         
     /// <summary>
     /// The cancellation token to stop all running tasks.
@@ -139,10 +131,7 @@ public abstract class PluginBase : IPluginController
     /// <summary>
     /// Can be used to request a cancellation to stop the plugin.<br/>
     /// </summary>
-    protected void CancellationRequest()
-    {
-        _cancellationTokenSource.Cancel();
-    }
+    protected void CancellationRequest() => _cancellationTokenSource.Cancel();
 
     /// <summary>
     /// Is called when the plugin gets saved and before every start.
@@ -166,7 +155,7 @@ public abstract class PluginBase : IPluginController
     
     /// <summary>
     /// Is called once when the plugin stops.<br/>
-    /// Can be used to disconnect or dispose members of the specific plugin.
+    /// Can be used to disconnect or dispose of members.
     /// </summary>
     protected abstract void OnStop();
     
