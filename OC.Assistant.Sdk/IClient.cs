@@ -66,14 +66,14 @@ public interface IClient
     IRecordDataServer RecordDataServer { get; }
     
     /// <summary>
-    /// The client communication type.
+    /// The client type.
     /// </summary>
-    CommunicationType CommunicationType { get; }
+    Type ClientType { get; }
     
     /// <summary>
     /// The TimeScaling value.
     /// </summary>
-    public double TimeScaling { get; }
+    double TimeScaling { get; }
     
     /// <summary>
     /// The server address.

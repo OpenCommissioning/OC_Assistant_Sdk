@@ -86,8 +86,8 @@ public abstract class PluginBase : IPluginController
     /// <inheritdoc cref="IClient.ServerPort"/>
     protected int ServerPort => _client?.ServerPort ?? 0;
     
-    /// <inheritdoc cref="IClient.CommunicationType"/>
-    protected CommunicationType CommunicationType => _client?.CommunicationType ?? CommunicationType.Default;
+    /// <inheritdoc cref="IClient.ClientType"/>
+    protected Type? CommunicationType => _client?.ClientType;
 
     /// <inheritdoc cref="IClient.RecordDataServer"/>
     protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
