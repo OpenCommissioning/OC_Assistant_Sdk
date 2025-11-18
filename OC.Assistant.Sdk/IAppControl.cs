@@ -11,8 +11,7 @@ public interface IAppControl
     /// Connects to a project file.
     /// </summary>
     /// <param name="projectFile">The path of the project file.</param>
-    /// <param name="clientType">The client <see cref="Type"/>.</param>
-    public void Connect(string projectFile, Type clientType);
+    public void Connect(string projectFile);
     
     /// <summary>
     /// Disconnects from the currently connected Visual Studio Solution.
@@ -38,7 +37,7 @@ public interface IAppControl
     /// <summary>
     /// Is raised with the project file.
     /// </summary>
-    public event Action<string, Type>? Connected;
+    public event Action<string>? Connected;
     
     /// <summary>
     /// Is raised when the project gets disconnected.
@@ -70,11 +69,6 @@ public interface IAppControl
     /// Is raised when a plugin has been updated.
     /// </summary>
     public event Action<string?, string?> PluginUpdated;
-    
-    /// <summary>
-    /// Is raised when a plugin client has been requested.
-    /// </summary>
-    public event Func<int, int, IClient>? PluginClientRequested;
     
     /// <summary>
     /// The TimeScaling value.

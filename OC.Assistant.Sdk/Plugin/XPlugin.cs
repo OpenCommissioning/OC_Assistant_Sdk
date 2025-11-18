@@ -32,6 +32,7 @@ internal class XPlugin
         Element = new XElement(nameof(Plugin),
             new XAttribute(nameof(Name), plugin.Name),
             new XAttribute(nameof(Type), plugin.Type!.Name),
+            new XAttribute(nameof(ClientType), plugin.ClientType?.Name ?? "None"),
             new XAttribute(nameof(IoType), plugin.PluginController!.IoType.ToString()),
             new XAttribute(nameof(InputSize), plugin.PluginController.InputSize),
             new XAttribute(nameof(OutputSize), plugin.PluginController.OutputSize),
@@ -49,6 +50,11 @@ internal class XPlugin
     /// Gets the Type attribute value.
     /// </summary>
     public string Type => Element.GetOrCreateAttribute(nameof(Type)).Value;
+    
+    /// <summary>
+    /// Gets the ClientType attribute value.
+    /// </summary>
+    public string ClientType => Element.GetOrCreateAttribute(nameof(ClientType)).Value;
 
     /// <summary>
     /// Gets the IoType attribute value.
