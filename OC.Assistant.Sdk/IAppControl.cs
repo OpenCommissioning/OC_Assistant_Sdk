@@ -29,6 +29,12 @@ public interface IAppControl
     public void Stop();
     
     /// <summary>
+    /// Adds content to the menu.
+    /// </summary>
+    /// <param name="content"></param>
+    public void AddMenuContent(object content);
+    
+    /// <summary>
     /// Adds content to the welcome page.
     /// </summary>
     /// <param name="content"></param>
@@ -53,12 +59,6 @@ public interface IAppControl
     /// Is raised when a project is connected and TwinCAT stopped running.
     /// </summary>
     public event Action? StoppedRunning;
-    
-    /// <summary>
-    /// Is raised with <c>True</c> when the project gets disconnected or when TwinCAT started running.<br/>
-    /// Is raised with <c>False</c> when a project is connected and TwinCAT stopped running.
-    /// </summary>
-    public event Action<bool>? Locked;
 
     /// <summary>
     /// Is raised when a project configuration has been received.
@@ -68,15 +68,10 @@ public interface IAppControl
     /// <summary>
     /// Is raised when a plugin has been updated.
     /// </summary>
-    public event Action<string?, string?> PluginUpdated;
+    public event Action<string?, string?>? PluginUpdated;
     
     /// <summary>
-    /// The TimeScaling value.
+    /// Is raised when the TimeScaling value has been updated.
     /// </summary>
-    public double TimeScaling { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the connected project is currently running.
-    /// </summary>
-    public bool IsRunning { get; }
+    public event Action<double>? TimeScalingUpdated;
 }
