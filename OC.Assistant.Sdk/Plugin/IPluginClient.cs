@@ -1,9 +1,9 @@
-﻿namespace OC.Assistant.Sdk;
+﻿namespace OC.Assistant.Sdk.Plugin;
 
 /// <summary>
 /// Client interface for cyclic I/O exchange.
 /// </summary>
-public interface IClient
+public interface IPluginClient
 {
     /// <summary>
     /// Buffer to store data to write.

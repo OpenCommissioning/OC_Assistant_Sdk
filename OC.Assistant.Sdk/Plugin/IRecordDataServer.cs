@@ -1,4 +1,4 @@
-﻿namespace OC.Assistant.Sdk;
+﻿namespace OC.Assistant.Sdk.Plugin;
 
 /// <summary>
 /// Represents an interface for a record data server.

@@ -7,5 +7,5 @@
 public class ExtensionBase(IAppControl appControl)
 {
     /// <inheritdoc cref="IAppControl"/>
-    public IAppControl AppControl { get; } = appControl;
+    protected IAppControl AppControl { get; } = appControl;
 }

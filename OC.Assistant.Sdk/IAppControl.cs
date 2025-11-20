@@ -19,14 +19,14 @@ public interface IAppControl
     public void Disconnect();
     
     /// <summary>
-    /// Triggers the application start state.
+    /// Triggers the application to start all plugins of the given type.
     /// </summary>
-    public void Start();
+    public void StartPlugins(Type? clientType);
     
     /// <summary>
-    /// Triggers the application stop state.
+    /// Triggers the application to stop all plugins of the given type.
     /// </summary>
-    public void Stop();
+    public void StopPlugins(Type? clientType);
     
     /// <summary>
     /// Adds content to the menu.
@@ -41,7 +41,7 @@ public interface IAppControl
     public void AddWelcomePageContent(object content);
     
     /// <summary>
-    /// Is raised with the project file.
+    /// Is raised with the project file when the project gets connected.
     /// </summary>
     public event Action<string>? Connected;
     
@@ -49,16 +49,6 @@ public interface IAppControl
     /// Is raised when the project gets disconnected.
     /// </summary>
     public event Action? Disconnected;
-    
-    /// <summary>
-    /// Is raised when a project is connected and TwinCAT started running.
-    /// </summary>
-    public event Action? StartedRunning;
-    
-    /// <summary>
-    /// Is raised when a project is connected and TwinCAT stopped running.
-    /// </summary>
-    public event Action? StoppedRunning;
 
     /// <summary>
     /// Is raised when a project configuration has been received.

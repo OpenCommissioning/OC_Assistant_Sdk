@@ -6,7 +6,7 @@ The official SDK for creating
 [![NuGet Status](https://img.shields.io/nuget/v/OC.Assistant.Sdk.svg)](https://www.nuget.org/packages/OC.Assistant.Sdk/)
 
 ### Quick Getting Started:
-1. Create a ```Class Library``` project with target framework ```.NET8``` or ```.NET Framework 4.8.1```
+1. Create a ```Class Library``` project with target framework ```.NET 10```
 2. Add the ```OC.Assistant.Sdk``` package via nuget
 3. Create a public class and inherit the ```OC.Assistant.Sdk.PluginBase```
 4. Create a xml file with file extension ```*.plugin``` and let it copy to the output directory:

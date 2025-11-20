@@ -1,4 +1,4 @@
-﻿namespace OC.Assistant.Sdk;
+﻿namespace OC.Assistant.Sdk.Plugin;
 
 internal class RecordDataServerFallback : IRecordDataServer
 {

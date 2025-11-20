@@ -5,7 +5,7 @@ namespace OC.Assistant.Sdk.Plugin;
 /// <summary>
 /// Represents a wrapper around a <see cref="XElement"/> for plugin-specific content.
 /// </summary>
-internal class XPlugin
+public class XPlugin
 {
     /// <summary>
     /// Gets the underlying <see cref="XElement"/>.
@@ -27,16 +27,16 @@ internal class XPlugin
     /// <param name="plugin">The given <see cref="Plugin"/>.</param>
     public XPlugin(IPlugin plugin)
     {
-        if (!plugin.IsValid) return;
+        if (plugin.Type is null || plugin.PluginController is null) return;
         
         Element = new XElement(nameof(Plugin),
             new XAttribute(nameof(Name), plugin.Name),
-            new XAttribute(nameof(Type), plugin.Type!.Name),
-            new XAttribute(nameof(ClientType), plugin.ClientType?.Name ?? "None"),
-            new XAttribute(nameof(IoType), plugin.PluginController!.IoType.ToString()),
+            new XAttribute(nameof(Type), plugin.Type.Name),
+            new XAttribute(nameof(ClientType), plugin.ClientType?.Name ?? "<unknown>"),
+            new XAttribute(nameof(IoType), plugin.PluginController.IoType.ToString()),
             new XAttribute(nameof(InputSize), plugin.PluginController.InputSize),
             new XAttribute(nameof(OutputSize), plugin.PluginController.OutputSize),
-            new XElement(nameof(Parameter), plugin.PluginController.Parameter.XElement.Nodes()),
+            new XElement(nameof(Parameter), plugin.PluginController.Parameter.ToXElement().Nodes()),
             new XElement(nameof(InputStructure), plugin.PluginController.InputStructure.XElement.Nodes()),
             new XElement(nameof(OutputStructure), plugin.PluginController.OutputStructure.XElement.Nodes()));
     }

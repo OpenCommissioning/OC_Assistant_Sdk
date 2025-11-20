@@ -80,19 +80,19 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     protected byte[] OutputBuffer => _client?.WriteBuffer ?? [];
     
-    /// <inheritdoc cref="IClient.ServerAddress"/>
+    /// <inheritdoc cref="IPluginClient.ServerAddress"/>
     protected string ServerAddress => _client?.ServerAddress ?? "";
     
-    /// <inheritdoc cref="IClient.ServerPort"/>
+    /// <inheritdoc cref="IPluginClient.ServerPort"/>
     protected int ServerPort => _client?.ServerPort ?? 0;
     
-    /// <inheritdoc cref="IClient.ClientType"/>
+    /// <inheritdoc cref="IPluginClient.ClientType"/>
     protected Type? CommunicationType => _client?.ClientType;
 
-    /// <inheritdoc cref="IClient.RecordDataServer"/>
+    /// <inheritdoc cref="IPluginClient.RecordDataServer"/>
     protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
     
-    /// <inheritdoc cref="IClient.TimeScaling"/>
+    /// <inheritdoc cref="IPluginClient.TimeScaling"/>
     protected double TimeScaling => _client?.TimeScaling ?? 1;
 
     /// <summary>
@@ -189,7 +189,7 @@ public abstract class PluginBase : IPluginController
     private bool _ioChanged;
     private IoType _ioType = IoType.None;
     private int _delayAfterStart;
-    private IClient? _client;
+    private IPluginClient? _client;
     private CancellationTokenSource _cancellationTokenSource = new();
     private readonly ParameterCollection _parameters = new();
     private bool _customReadWrite;
@@ -376,7 +376,7 @@ public abstract class PluginBase : IPluginController
     private event Action? Stopped;
     private event Action? Starting;
     private event Action? Stopping;
-    private event Func<IClient?>? ClientRequested;
+    private event Func<IPluginClient?>? ClientRequested;
     
     event Action? IPluginController.Started
     {
@@ -402,7 +402,7 @@ public abstract class PluginBase : IPluginController
         remove => Stopping -= value;
     }
     
-    event Func<IClient?>? IPluginController.ClientRequested
+    event Func<IPluginClient?>? IPluginController.ClientRequested
     {
         add => ClientRequested += value;
         remove => ClientRequested -= value;
