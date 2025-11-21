@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.2) (2025-11-17)
+
+### Bug Fixes
+
+* move TimeScaling to IClient interface for direct access on PluginBase ([337053b](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/337053b47fdcb194c64e1378c6b5903f5a9c3e28))
+* replace CommunicationType enum with a generic System.Type ([d81b5a9](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/d81b5a99991ec089a7cb27d70e03d49df2a72492))
+* rework of RecordData for less complex structure ([d5153aa](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/d5153aaf8491f56f6c9566e01a769f73e4f12bd9))
+* rework of XmlFile ([ab2a8f8](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/ab2a8f823ddd905f945a28c94c178533fa78a282))
+
+<a name="2.0.1"></a>
+## [2.0.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.1) (2025-11-13)
+
+### Bug Fixes
+
+* new internal event for requesting a plugin client ([6b8f44f](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/6b8f44fb991ef5256e57acf450e4a6918e4f7bd6))
+* remove deprecated RecordDataList ([f95ff26](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/f95ff266e386b9c55565b73f0de0ed9fd55c12da))
+
+<a name="2.0.0"></a>
+## [2.0.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.0) (2025-11-10)
+
+### Features
+
+* breaking changes for Assistant v2 ([5422814](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5422814a76fcb3711056dbe43cecbce9708a39f7))
+* new memory-based client for TcpIp communication ([5ed131b](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5ed131b986fc4431de7f33b7adfb5d784f2b7c18))
+
+### Breaking Changes
+
+* breaking changes for Assistant v2 ([5422814](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/5422814a76fcb3711056dbe43cecbce9708a39f7))
+
+<a name="1.7.2"></a>
+## [1.7.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.2) (2025-08-13)
+
+### Bug Fixes
+
+* adapt API to match new Assistant implementation ([006983f](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/006983f7cf2a2b07b6deb856c8e4da0544a69553))
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v1.7.1) (2025-04-24)
 
