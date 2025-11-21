@@ -2,19 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
-<a name="2.1.0"></a>
-## [2.1.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.1.0) (2025-11-21)
-
-### Features
-
-* add a base class for extensions ([d1b1cab](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/d1b1cabc21a603b46c3c24b103b86a5af862a7f6))
-* upgrade to .NET 10. .NET Framework is no longer supported ([a0ad550](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/a0ad5503a6dc08c05dd822550f10030e1d82e568))
-
-### Bug Fixes
-
-* adjust the IAppControl interface to work with the new ExtensionBase class ([777c66b](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/777c66bafa812cb624a6d28a0d9ed5b7b1231413))
-* implement new ClientType ([9d99e8a](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/9d99e8a54923749dcf33aa1a3dc91c6a1ba215ef))
-
 <a name="2.0.2"></a>
 ## [2.0.2](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.0.2) (2025-11-17)
 
