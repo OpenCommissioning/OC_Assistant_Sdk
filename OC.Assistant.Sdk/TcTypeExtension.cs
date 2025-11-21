@@ -7,75 +7,83 @@ namespace OC.Assistant.Sdk;
 /// </summary>
 public static class TcTypeExtension
 {
-    /// <summary>
-    /// Returns a managed string of this <see cref="TcType"/>.
-    /// </summary>
-    public static string Name(this TcType type)
+    /// <param name="type">The <see cref="TcType"/> to extend.</param>
+    extension(TcType type)
     {
-        return type.ToString().ToUpper();
-    }
-        
-    /// <summary>
-    /// Returns the BitSize of this <see cref="TcType"/>.
-    /// </summary>
-    public static int BitSize(this TcType type)
-    {
-        return BitSizeByType[type];
-    }
-        
-    /// <summary>
-    /// Converts this <see cref="TcType"/>
-    /// to a <see cref="T:System.Type"/>. Default is <see cref="T:System.Byte"/>[].
-    /// </summary>
-    public static Type ToSystemType(this TcType type)
-    {
-        return type switch
+        /// <summary>
+        /// Returns a managed string of this <see cref="TcType"/>.
+        /// </summary>
+        public string Name()
         {
-            TcType.Bit or TcType.Bool => typeof(bool),
-            TcType.Byte or TcType.UsInt or TcType.SInt => typeof(byte),
-            TcType.Uint => typeof(ushort),
-            TcType.Int => typeof(short),
-            TcType.UDint => typeof(uint),
-            TcType.Dint => typeof(int),
-            TcType.ULint => typeof(ulong),
-            TcType.Lint => typeof(long),
-            TcType.Real => typeof(float),
-            TcType.LReal => typeof(double),
-            _ => typeof(byte[])
-        };
-    }
-        
-    /// <summary>
-    /// Converts the <see cref="T:System.String"/>
-    /// to a <see cref="TcType"/> if possible.
-    /// </summary>
-    public static TcType ToTcType(this string typeName)
-    {
-        return TypeByName.TryGetValue(typeName, out var value) ? value : TcType.Unknown;
-    }
-        
-    /// <summary>
-    /// Returns the BitSize of this type if exists, otherwise returns 0.
-    /// </summary>
-    public static int TcBitSize(this string type)
-    {
-        return type.ToTcType() == TcType.Unknown ? TcArrayBitSize(type) : BitSizeByType[type.ToTcType()];
+            return type.ToString().ToUpper();
+        }
+
+        /// <summary>
+        /// Returns the BitSize of this <see cref="TcType"/>.
+        /// </summary>
+        public int BitSize()
+        {
+            return BitSizeByType[type];
+        }
+
+        /// <summary>
+        /// Converts this <see cref="TcType"/>
+        /// to a <see cref="T:System.Type"/>. Default is <see cref="T:System.Byte"/>[].
+        /// </summary>
+        public Type ToSystemType()
+        {
+            return type switch
+            {
+                TcType.Bit or TcType.Bool => typeof(bool),
+                TcType.Byte or TcType.UsInt or TcType.SInt => typeof(byte),
+                TcType.Uint => typeof(ushort),
+                TcType.Int => typeof(short),
+                TcType.UDint => typeof(uint),
+                TcType.Dint => typeof(int),
+                TcType.ULint => typeof(ulong),
+                TcType.Lint => typeof(long),
+                TcType.Real => typeof(float),
+                TcType.LReal => typeof(double),
+                _ => typeof(byte[])
+            };
+        }
     }
 
-    private static int TcArrayBitSize(this string arrayType)
+    /// <param name="typeName">The <see cref="string"/> to extend.</param>
+    extension(string typeName)
     {
-        const string pattern = @"^ARRAY\s*\[(\d+)..(\d+)]\s*OF\s*(\S+)$";
-        var match = Regex.Match(arrayType, pattern, RegexOptions.IgnoreCase);
-        if (!match.Success) return 0;
+        /// <summary>
+        /// Converts the <see cref="T:System.String"/>
+        /// to a <see cref="TcType"/> if possible.
+        /// </summary>
+        public TcType ToTcType()
+        {
+            return TypeByName.GetValueOrDefault(typeName, TcType.Unknown);
+        }
+
+        /// <summary>
+        /// Returns the BitSize of this type if exists, otherwise returns 0.
+        /// </summary>
+        public int TcBitSize()
+        {
+            return typeName.ToTcType() == TcType.Unknown ? TcArrayBitSize(typeName) : BitSizeByType[typeName.ToTcType()];
+        }
+
+        private int TcArrayBitSize()
+        {
+            const string pattern = @"^ARRAY\s*\[(\d+)..(\d+)]\s*OF\s*(\S+)$";
+            var match = Regex.Match(typeName, pattern, RegexOptions.IgnoreCase);
+            if (!match.Success) return 0;
             
-        var lo = int.Parse(match.Groups[1].Value);
-        var hi = int.Parse(match.Groups[2].Value);
-        var type = match.Groups[3].Value;
+            var lo = int.Parse(match.Groups[1].Value);
+            var hi = int.Parse(match.Groups[2].Value);
+            var type = match.Groups[3].Value;
             
-        var bitSize = type.TcBitSize() * (hi - lo + 1);
-        return bitSize > 0 ? bitSize : 0;
+            var bitSize = type.TcBitSize() * (hi - lo + 1);
+            return bitSize > 0 ? bitSize : 0;
+        }
     }
-        
+
     private static readonly Dictionary<TcType, int> BitSizeByType = new()
     {
         { TcType.Bit, 1 },

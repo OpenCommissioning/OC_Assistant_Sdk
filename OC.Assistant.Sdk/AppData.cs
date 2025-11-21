@@ -1,10 +1,10 @@
 ﻿namespace OC.Assistant.Sdk;
 
-internal static class AppData
+/// <summary>
+/// ApplicationData information.
+/// </summary>
+public static class AppData
 {
-    private static readonly string PathPreset = 
-        $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\OC.Assistant";
-
     /// <summary>
     /// Gets the path of the user-specific directory.
     /// </summary>
@@ -12,8 +12,8 @@ internal static class AppData
     {
         get
         {
-            Directory.CreateDirectory(PathPreset);
-            return PathPreset;
+            Directory.CreateDirectory(field);
+            return field;
         }
-    }
+    } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\OC.Assistant";
 }

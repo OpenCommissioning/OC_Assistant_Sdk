@@ -11,8 +11,7 @@ public interface IAppControl
     /// Connects to a project file.
     /// </summary>
     /// <param name="projectFile">The path of the project file.</param>
-    /// <param name="clientType">The client <see cref="Type"/>.</param>
-    public void Connect(string projectFile, Type clientType);
+    public void Connect(string projectFile);
     
     /// <summary>
     /// Disconnects from the currently connected Visual Studio Solution.
@@ -20,14 +19,20 @@ public interface IAppControl
     public void Disconnect();
     
     /// <summary>
-    /// Triggers the application start state.
+    /// Triggers the application to start all plugins of the given type.
     /// </summary>
-    public void Start();
+    public void StartPlugins(Type? clientType);
     
     /// <summary>
-    /// Triggers the application stop state.
+    /// Triggers the application to stop all plugins of the given type.
     /// </summary>
-    public void Stop();
+    public void StopPlugins(Type? clientType);
+    
+    /// <summary>
+    /// Adds content to the menu.
+    /// </summary>
+    /// <param name="content"></param>
+    public void AddMenuContent(object content);
     
     /// <summary>
     /// Adds content to the welcome page.
@@ -36,30 +41,14 @@ public interface IAppControl
     public void AddWelcomePageContent(object content);
     
     /// <summary>
-    /// Is raised with the project file.
+    /// Is raised with the project file when the project gets connected.
     /// </summary>
-    public event Action<string, Type>? Connected;
+    public event Action<string>? Connected;
     
     /// <summary>
     /// Is raised when the project gets disconnected.
     /// </summary>
     public event Action? Disconnected;
-    
-    /// <summary>
-    /// Is raised when a project is connected and TwinCAT started running.
-    /// </summary>
-    public event Action? StartedRunning;
-    
-    /// <summary>
-    /// Is raised when a project is connected and TwinCAT stopped running.
-    /// </summary>
-    public event Action? StoppedRunning;
-    
-    /// <summary>
-    /// Is raised with <c>True</c> when the project gets disconnected or when TwinCAT started running.<br/>
-    /// Is raised with <c>False</c> when a project is connected and TwinCAT stopped running.
-    /// </summary>
-    public event Action<bool>? Locked;
 
     /// <summary>
     /// Is raised when a project configuration has been received.
@@ -69,20 +58,10 @@ public interface IAppControl
     /// <summary>
     /// Is raised when a plugin has been updated.
     /// </summary>
-    public event Action<string?, string?> PluginUpdated;
+    public event Action<string?, string?>? PluginUpdated;
     
     /// <summary>
-    /// Is raised when a plugin client has been requested.
+    /// Is raised when the TimeScaling value has been updated.
     /// </summary>
-    public event Func<int, int, IClient>? PluginClientRequested;
-    
-    /// <summary>
-    /// The TimeScaling value.
-    /// </summary>
-    public double TimeScaling { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the connected project is currently running.
-    /// </summary>
-    public bool IsRunning { get; }
+    public event Action<double>? TimeScalingUpdated;
 }

@@ -4,10 +4,10 @@
 /// Represents a static class to set/reset a busy state.
 /// Each <see cref="object"/> is responsible to reset the state after setting it, otherwise the state will remain busy.
 /// </summary>
-internal static class BusyState
+public static class BusyState
 {
     private static readonly HashSet<int> HashCodes = [];
-    private static readonly object HashCodesLock = new();
+    private static readonly Lock HashCodesLock = new();
 
     /// <summary>
     /// Returns true if any <see cref="object"/> has set the state, otherwise false.

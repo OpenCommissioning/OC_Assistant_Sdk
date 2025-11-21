@@ -3,7 +3,7 @@
 /// <summary>
 /// Internal interface to control the plugin.
 /// </summary>
-internal interface IPluginController
+public interface IPluginController
 {
     /// <summary>
     /// Initializes the plugin with the given name.
@@ -56,7 +56,7 @@ internal interface IPluginController
     /// <summary>
     /// Is raised when the client has been requested.
     /// </summary>
-    event Func<IClient?> ClientRequested;
+    event Func<IPluginClient?> ClientRequested;
     
     /// <summary>
     /// <see cref="PluginIoType"/> value.

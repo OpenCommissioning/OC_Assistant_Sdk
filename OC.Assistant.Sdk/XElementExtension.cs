@@ -5,7 +5,7 @@ namespace OC.Assistant.Sdk;
 /// <summary>
 /// Provides extension methods for the <see cref="XElement"/> class.
 /// </summary>
-internal static class XElementExtension
+public static class XElementExtension
 {
     /// <param name="xElement">The parent <see cref="XElement"/>.</param>
     extension(XElement? xElement)

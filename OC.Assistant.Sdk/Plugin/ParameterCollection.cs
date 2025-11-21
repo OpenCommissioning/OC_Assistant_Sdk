@@ -12,10 +12,7 @@ internal class ParameterCollection : IParameterCollection
         if (field?.GetCustomAttribute(typeof(PluginParameter)) is not PluginParameter) return;
         var parameter = new Parameter(owner, field);
         
-        if (!_fields.ContainsKey(parameter.Name))
-        {
-            _fields.Add(parameter.Name, parameter);
-        }
+        _fields.TryAdd(parameter.Name, parameter);
     } 
 
     public void Update(XContainer xElement)
@@ -42,16 +39,13 @@ internal class ParameterCollection : IParameterCollection
         return _fields.Values.ToList();
     }
 
-    public XElement XElement
+    public XElement ToXElement()
     {
-        get
+        var xElement = new XElement(nameof(IPluginController.Parameter));
+        foreach (var parameter in _fields.Values)
         {
-            var xElement = new XElement(nameof(IPluginController.Parameter));
-            foreach (var parameter in _fields.Values)
-            {
-                xElement.Add(new XElement(parameter.Name, parameter.Value));
-            }
-            return xElement;
+            xElement.Add(new XElement(parameter.Name, parameter.Value));
         }
+        return xElement;
     }
 }

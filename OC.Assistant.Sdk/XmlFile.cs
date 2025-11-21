@@ -7,7 +7,7 @@ namespace OC.Assistant.Sdk;
 /// Represents a class that manages the project XML file, providing functionality to save and restore
 /// plugins and project-related settings.
 /// </summary>
-internal class XmlFile
+public class XmlFile
 {
     private static readonly Lazy<XmlFile> LazyInstance = new(() => new XmlFile());
     private XDocument? _doc;

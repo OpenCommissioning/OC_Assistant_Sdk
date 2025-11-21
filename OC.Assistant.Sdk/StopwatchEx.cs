@@ -51,19 +51,13 @@ public class StopwatchEx : Stopwatch, IDisposable
         //dueTime in 100 nanosecond intervals, negative values indicate relative time
         var dueTime = ElapsedTicks - millisecondsTimeout * 10000;
         
-        if (dueTime >= 0)
-        {
-            Restart();
-            return;
-        }
-        
-        if (!SetWaitableTimer(_timer, ref dueTime,
+        if (dueTime >= 0 || !SetWaitableTimer(_timer, ref dueTime,
                 0, IntPtr.Zero, IntPtr.Zero, false))
         {
             Restart();
             return;
         }
-        
+
         _waitHandle.WaitOne();
         Restart();
     }
