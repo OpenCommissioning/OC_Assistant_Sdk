@@ -67,7 +67,7 @@ public abstract class PluginBase : IPluginController
     /// <br/>
     /// Is updated before every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] InputBuffer => _client?.ReadBuffer ?? [];
+    protected byte[] InputBuffer => _channel?.ReadBuffer ?? [];
         
     /// <summary>
     /// Buffer for plugin outputs.
@@ -78,28 +78,30 @@ public abstract class PluginBase : IPluginController
     /// <br/>
     /// Is written after every <see cref="OnUpdate"/> cycle.
     /// </summary>
-    protected byte[] OutputBuffer => _client?.WriteBuffer ?? [];
+    protected byte[] OutputBuffer => _channel?.WriteBuffer ?? [];
     
-    /// <inheritdoc cref="IPluginClient.ServerAddress"/>
-    protected string ServerAddress => _client?.ServerAddress ?? "";
+    /// <inheritdoc cref="ChannelBase.ServerAddress"/>
+    protected string ServerAddress => _channel?.ServerAddress ?? "";
     
-    /// <inheritdoc cref="IPluginClient.ServerPort"/>
-    protected int ServerPort => _client?.ServerPort ?? 0;
+    /// <inheritdoc cref="ChannelBase.ServerPort"/>
+    protected int ServerPort => _channel?.ServerPort ?? 0;
     
-    /// <inheritdoc cref="IPluginClient.ClientType"/>
-    protected Type? CommunicationType => _client?.ClientType;
+    /// <summary>
+    /// The <see cref="Type"/> of the channel.
+    /// </summary>
+    protected Type? ChannelType => _channel?.GetType();
 
-    /// <inheritdoc cref="IPluginClient.RecordDataServer"/>
-    protected IRecordDataServer RecordDataServer => _client?.RecordDataServer ?? new RecordDataServerFallback();
+    /// <inheritdoc cref="ChannelBase.RecordDataServer"/>
+    protected IRecordDataServer RecordDataServer => _channel?.RecordDataServer ?? new RecordDataServerFallback();
     
-    /// <inheritdoc cref="IPluginClient.TimeScaling"/>
-    protected double TimeScaling => _client?.TimeScaling ?? 1;
+    /// <inheritdoc cref="ChannelBase.TimeScaling"/>
+    protected double TimeScaling => _channel?.TimeScaling ?? 1;
 
     /// <summary>
     /// Writes data from the <see cref="OutputBuffer"/> to the server.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcWrite() => _client?.Write();
+    protected void TcWrite() => _channel?.Write();
 
     /// <summary>
     /// Writes data from a custom source to the server.<br/>
@@ -109,19 +111,19 @@ public abstract class PluginBase : IPluginController
     /// <param name="destinationOffset">The server relative offset.</param>
     /// <param name="length">Data length.</param>
     protected void TcWrite(byte[] source, int sourceOffset, int destinationOffset, int length)
-        => _client?.Write(source, sourceOffset, destinationOffset, length);
+        => _channel?.Write(source, sourceOffset, destinationOffset, length);
 
     /// <summary>
     /// Reads data from the server and copies to the <see cref="InputBuffer"/>.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcRead() => _client?.Read();
+    protected void TcRead() => _channel?.Read();
     
     /// <summary>
     /// Reads in- and output data from the server and copies to the
     /// <see cref="InputBuffer"/> and <see cref="OutputBuffer"/>.
     /// </summary>
-    protected void TcReadAll() => _client?.ReadAll();
+    protected void TcReadAll() => _channel?.ReadAll();
         
     /// <summary>
     /// The cancellation token to stop all running tasks.
@@ -189,7 +191,7 @@ public abstract class PluginBase : IPluginController
     private bool _ioChanged;
     private IoType _ioType = IoType.None;
     private int _delayAfterStart;
-    private IPluginClient? _client;
+    private ChannelBase? _channel;
     private CancellationTokenSource _cancellationTokenSource = new();
     private readonly ParameterCollection _parameters = new();
     private bool _customReadWrite;
@@ -241,17 +243,17 @@ public abstract class PluginBase : IPluginController
 
     private void InitializeClient()
     {
-        if (_ioType == IoType.None || _name is null || _client is null) return;
+        if (_ioType == IoType.None || _name is null || _channel is null) return;
         
         switch (_ioType)
         {
             case IoType.Struct:
-                _client.SetReadIndex(_name, "GVL_", ".Inputs");
-                _client.SetWriteIndex(_name, "GVL_", ".Outputs");
+                _channel.SetReadIndex(_name, "Inputs");
+                _channel.SetWriteIndex(_name, "Outputs");
                 break;
             case IoType.Address:
-                _client.SetReadIndex(_name, "GVL_", $".I{InputAddress[0]}");
-                _client.SetWriteIndex(_name, "GVL_", $".Q{OutputAddress[0]}");
+                _channel.SetReadIndex(_name, $"I{InputAddress[0]}");
+                _channel.SetWriteIndex(_name, $"Q{OutputAddress[0]}");
                 break;
         }
     }
@@ -268,8 +270,8 @@ public abstract class PluginBase : IPluginController
             
             if (OnSave())
             {
-                _client = ClientRequested?.Invoke();
-                if (_client is not null && OnStart())
+                _channel = ChannelRequested?.Invoke();
+                if (_channel is not null && OnStart())
                 {
                     _isRunning = true;
                     Started?.Invoke();
@@ -278,9 +280,9 @@ public abstract class PluginBase : IPluginController
                     while (!CancellationToken.IsCancellationRequested)
                     {
                         stopwatch.WaitUntil(1);
-                        if (_ioType != IoType.None && !_customReadWrite) _client?.Read();
+                        if (_ioType != IoType.None && !_customReadWrite) _channel?.Read();
                         OnUpdate();
-                        if (_ioType != IoType.None && !_customReadWrite) _client?.Write();
+                        if (_ioType != IoType.None && !_customReadWrite) _channel?.Write();
                     }
 
                     Stopping?.Invoke();
@@ -295,7 +297,7 @@ public abstract class PluginBase : IPluginController
         
         _isRunning = false;
         _readyToStart = true;
-        _client?.Disconnect();
+        _channel?.Disconnect();
         Stopped?.Invoke();
     }
 
@@ -376,7 +378,7 @@ public abstract class PluginBase : IPluginController
     private event Action? Stopped;
     private event Action? Starting;
     private event Action? Stopping;
-    private event Func<IPluginClient?>? ClientRequested;
+    private event Func<ChannelBase?>? ChannelRequested;
     
     event Action? IPluginController.Started
     {
@@ -402,9 +404,9 @@ public abstract class PluginBase : IPluginController
         remove => Stopping -= value;
     }
     
-    event Func<IPluginClient?>? IPluginController.ClientRequested
+    event Func<ChannelBase?>? IPluginController.ChannelRequested
     {
-        add => ClientRequested += value;
-        remove => ClientRequested -= value;
+        add => ChannelRequested += value;
+        remove => ChannelRequested -= value;
     }
 }
