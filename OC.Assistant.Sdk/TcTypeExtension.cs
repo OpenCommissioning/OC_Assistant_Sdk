@@ -102,7 +102,7 @@ public static class TcTypeExtension
         { TcType.Lint, 64 },
         { TcType.ULint, 64 },
         { TcType.LReal, 64 },
-        { TcType.Unknown, 0 },
+        { TcType.Unknown, 0 }
     };
         
     private static readonly Dictionary<string, TcType> TypeByName = new()
