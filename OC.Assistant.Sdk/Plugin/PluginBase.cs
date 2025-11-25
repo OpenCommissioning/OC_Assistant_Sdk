@@ -124,11 +124,6 @@ public abstract class PluginBase : IPluginController
     /// <see cref="InputBuffer"/> and <see cref="OutputBuffer"/>.
     /// </summary>
     protected void TcReadAll() => _channel?.ReadAll();
-        
-    /// <summary>
-    /// The cancellation token to stop all running tasks.
-    /// </summary>
-    protected CancellationToken CancellationToken => _cancellationTokenSource.Token;
     
     /// <summary>
     /// Can be used to request a cancellation to stop the plugin.<br/>
@@ -185,8 +180,29 @@ public abstract class PluginBase : IPluginController
     /// </summary>
     public int[] OutputAddress { get; private set; } = [];
     
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc cref="IDisposable.Dispose"/>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+        {
+            _cancellationTokenSource.Dispose();
+        }
+
+        _disposed = true;
+    }
+    
     private bool _readyToStart = true;
     private string? _name;
+    private bool _disposed;
     private bool _isRunning;
     private bool _ioChanged;
     private IoType _ioType = IoType.None;
@@ -277,7 +293,8 @@ public abstract class PluginBase : IPluginController
                     Started?.Invoke();
                     InitializeClient();
                     var stopwatch = new StopwatchEx();
-                    while (!CancellationToken.IsCancellationRequested)
+                    var token = _cancellationTokenSource.Token;
+                    while (!token.IsCancellationRequested)
                     {
                         stopwatch.WaitUntil(1);
                         if (_ioType != IoType.None && !_customReadWrite) _channel?.Read();
@@ -366,7 +383,7 @@ public abstract class PluginBase : IPluginController
     {
         if (!_readyToStart) return;
         _cancellationTokenSource = new CancellationTokenSource();
-        Task.Run(Cycle, CancellationToken);
+        Task.Run(Cycle, _cancellationTokenSource.Token);
     }
     
     void IPluginController.Stop()

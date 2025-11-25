@@ -3,7 +3,7 @@
 /// <summary>
 /// Internal interface to control the plugin.
 /// </summary>
-public interface IPluginController
+public interface IPluginController : IDisposable
 {
     /// <summary>
     /// Initializes the plugin with the given name.
