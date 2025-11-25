@@ -32,7 +32,7 @@ public class XPlugin
         Element = new XElement(nameof(Plugin),
             new XAttribute(nameof(Name), plugin.Name),
             new XAttribute(nameof(Type), plugin.Type.Name),
-            new XAttribute(nameof(ChannelType), plugin.ClientType?.Name ?? "<unknown>"),
+            new XAttribute(nameof(ChannelType), plugin.ChannelType?.Name ?? "<unknown>"),
             new XAttribute(nameof(IoType), plugin.PluginController.IoType.ToString()),
             new XAttribute(nameof(InputSize), plugin.PluginController.InputSize),
             new XAttribute(nameof(OutputSize), plugin.PluginController.OutputSize),
