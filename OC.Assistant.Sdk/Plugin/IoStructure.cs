@@ -20,8 +20,7 @@ internal class IoStructure(string rootName) : IIoStructure
         XElement.Add(
             new XElement("Var", 
                 new XElement("Name", name), 
-                new XElement("Type", varType),
-                new XElement("BitOffset", _bitSize)));
+                new XElement("Type", varType)));
         
         //Here we fill up to full byte-size if the current variable is not a bit
         var mod8 = _bitSize % 8;
