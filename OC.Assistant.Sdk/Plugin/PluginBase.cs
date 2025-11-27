@@ -101,7 +101,7 @@ public abstract class PluginBase : IPluginController
     /// Writes data from the <see cref="OutputBuffer"/> to the server.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcWrite() => _channel?.Write();
+    protected void Write() => _channel?.Write();
 
     /// <summary>
     /// Writes data from a custom source to the server.<br/>
@@ -110,25 +110,30 @@ public abstract class PluginBase : IPluginController
     /// <param name="sourceOffset">The source offset.</param>
     /// <param name="destinationOffset">The server relative offset.</param>
     /// <param name="length">Data length.</param>
-    protected void TcWrite(byte[] source, int sourceOffset, int destinationOffset, int length)
+    protected void Write(byte[] source, int sourceOffset, int destinationOffset, int length)
         => _channel?.Write(source, sourceOffset, destinationOffset, length);
 
     /// <summary>
     /// Reads data from the server and copies to the <see cref="InputBuffer"/>.<br/>
     /// Is already called every cycle if <see cref="PluginCustomReadWrite"/> is not used.
     /// </summary>
-    protected void TcRead() => _channel?.Read();
+    protected void Read() => _channel?.Read();
     
     /// <summary>
     /// Reads in- and output data from the server and copies to the
     /// <see cref="InputBuffer"/> and <see cref="OutputBuffer"/>.
     /// </summary>
-    protected void TcReadAll() => _channel?.ReadAll();
+    protected void ReadAll() => _channel?.ReadAll();
     
     /// <summary>
     /// Can be used to request a cancellation to stop the plugin.<br/>
     /// </summary>
     protected void CancellationRequest() => _cancellationTokenSource.Cancel();
+    
+    /// <summary>
+    /// The cancellation token.
+    /// </summary>
+    protected CancellationToken CancellationToken => _cancellationTokenSource.Token;
 
     /// <summary>
     /// Is called when the plugin gets saved and before every start.
