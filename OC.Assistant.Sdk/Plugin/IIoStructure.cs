@@ -18,7 +18,7 @@ public interface IIoStructure
     /// <param name="name">Name of the variable.</param>
     /// <param name="type">Type of the variable.</param>
     /// <param name="arraySize">No array when zero, otherwise size of the array.</param>
-    public void AddVariable(string name, TcType type, int arraySize = 0);
+    public void AddVariable(string name, ManagedType type, int arraySize = 0);
     
     /// <summary>
     /// The current structure in xml-format.
