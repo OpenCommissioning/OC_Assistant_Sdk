@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.1.1) (2025-11-28)
+
+### Bug Fixes
+
+* implement IDisposable and dispose for a plugin ([a73399c](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/a73399cea68aa603617152253263e459d35eea8b))
+* replace IPluginClient with abstract ChannelBase class ([2c8bf91](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/commit/2c8bf91fbb9e4d148cf61051b40241a91b80f3cd))
+
 <a name="2.1.0"></a>
 ## [2.1.0](https://www.github.com/OpenCommissioning/OC_Assistant_Sdk/releases/tag/v2.1.0) (2025-11-21)
 
