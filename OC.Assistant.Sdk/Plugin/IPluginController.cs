@@ -3,7 +3,7 @@
 /// <summary>
 /// Internal interface to control the plugin.
 /// </summary>
-public interface IPluginController
+public interface IPluginController : IDisposable
 {
     /// <summary>
     /// Initializes the plugin with the given name.
@@ -54,9 +54,9 @@ public interface IPluginController
     event Action Stopping;
     
     /// <summary>
-    /// Is raised when the client has been requested.
+    /// Is raised when the channel has been requested.
     /// </summary>
-    event Func<IPluginClient?> ClientRequested;
+    event Func<ChannelBase?> ChannelRequested;
     
     /// <summary>
     /// <see cref="PluginIoType"/> value.

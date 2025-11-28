@@ -8,10 +8,10 @@ internal class IoStructure(string rootName) : IIoStructure
 
     public int Length => _bitSize % 8 == 0 ? _bitSize / 8 : _bitSize / 8 + 1;
 
-    public void AddVariable(string name, TcType type, int arraySize = 0)
+    public void AddVariable(string name, ManagedType type, int arraySize = 0)
     {
-        if (type == TcType.Unknown) return;
-        if (type == TcType.Bit && arraySize != 0) return;
+        if (type == ManagedType.Unknown) return;
+        if (type == ManagedType.Bit && arraySize != 0) return;
         
         var varType = arraySize > 0 
             ? $"ARRAY [0..{arraySize - 1}] OF {type.Name()}" 
@@ -20,12 +20,11 @@ internal class IoStructure(string rootName) : IIoStructure
         XElement.Add(
             new XElement("Var", 
                 new XElement("Name", name), 
-                new XElement("Type", varType),
-                new XElement("BitOffset", _bitSize)));
+                new XElement("Type", varType)));
         
         //Here we fill up to full byte-size if the current variable is not a bit
         var mod8 = _bitSize % 8;
-        if (type != TcType.Bit && mod8 != 0)
+        if (type != ManagedType.Bit && mod8 != 0)
         {
             _bitSize += 8 - mod8;
         }

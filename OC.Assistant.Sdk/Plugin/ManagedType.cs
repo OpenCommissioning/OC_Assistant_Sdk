@@ -1,19 +1,19 @@
-﻿namespace OC.Assistant.Sdk;
+﻿namespace OC.Assistant.Sdk.Plugin;
 
 /// <summary>
-/// TwinCAT basic types.
+/// Basic plugin types.
 /// </summary>
-public enum TcType
+public enum ManagedType
 {
     /// <summary>Represents a 1-bit <see cref="System.Boolean"/>.</summary>
     Bit,
-    /// <summary>Represents a 8-bit <see cref="System.Boolean"/>.</summary>
+    /// <summary>Represents an 8-bit <see cref="System.Boolean"/>.</summary>
     Bool,
-    /// <summary>Represents a 8-bit <see cref="System.Byte"/>.</summary>
+    /// <summary>Represents an 8-bit <see cref="System.Byte"/>.</summary>
     Byte,
-    /// <summary>Represents a 8-bit <see cref="System.Byte"/>.</summary>
+    /// <summary>Represents an 8-bit <see cref="System.Byte"/>.</summary>
     UsInt,
-    /// <summary>Represents a 8-bit <see cref="System.Byte"/>.</summary>
+    /// <summary>Represents an 8-bit <see cref="System.Byte"/>.</summary>
     SInt,
     /// <summary>Represents an 16-bit <see cref="System.UInt16"/>.</summary>
     Word,

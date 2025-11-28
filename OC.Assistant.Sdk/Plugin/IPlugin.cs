@@ -14,9 +14,9 @@ public interface IPlugin
     /// </summary>
     Type? Type { get; }
     /// <summary>
-    /// The client type.
+    /// The channel type.
     /// </summary>
-    Type? ClientType { get; }
+    Type? ChannelType { get; }
     /// <summary>
     /// The interface to control the plugin.
     /// </summary>
